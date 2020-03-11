@@ -1,6 +1,6 @@
 # FIFA_tracking
 
-# Purpose
+## Purpose
 
 Our application is designed to detect players during a FIFA match in order to have dataset to train an AI.
 
