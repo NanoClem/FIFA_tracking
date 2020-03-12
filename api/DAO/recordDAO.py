@@ -92,12 +92,12 @@ class recordDAO(object):
 
     def create(self, data):
         """ Create a new data document """
-        if self.exists(data):
-            self.ns.abort(409, message="document already exists", data={})
-        else:
-            data['created_at'] = str(datetime.now())
-            self.db.insert(data)
-            return {'message': 'success', 'data': data}
+        # if self.exists(data):
+        #     self.ns.abort(409, message="document already exists", data={})
+        # else:
+        data['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.db.insert(data)
+        return {'message': 'success', 'data': data}
 
 
     def createMany(self, dataList):
@@ -108,7 +108,7 @@ class recordDAO(object):
             if self.exists(data):   # avoid duplicates
                 ret.remove(data)
             else:
-                data['created_at'] = datetime.now()
+                data['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         self.db.insert_many(ret)
         return ret
