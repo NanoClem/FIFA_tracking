@@ -1,3 +1,4 @@
+from flask_restplus import marshal
 from datetime import datetime
 from bson.objectid import ObjectId
 from bson.json_util import dumps
@@ -67,6 +68,7 @@ class recordDAO(object):
     #---------------------------------------------
     #   BY TEAMS ID
     #---------------------------------------------
+
     def getByTeamId(self, id):
         """Return all data collections related to a team
         
@@ -80,6 +82,7 @@ class recordDAO(object):
         self.ns.abort(404, message="record {} doesn't exist".format(id), data={})
 
 
+
     #---------------------------------------------
     #   COMMON OPERATIONS
     #---------------------------------------------
@@ -90,14 +93,17 @@ class recordDAO(object):
         return list(cursor)
 
 
+
     def create(self, data):
         """ Create a new data document """
         # if self.exists(data):
         #     self.ns.abort(409, message="document already exists", data={})
         # else:
-        data['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.db.insert(data)
-        return {'message': 'success', 'data': data}
+        cpy_data = data
+        cpy_data['created_at'] = datetime.now()
+        ins = self.db.insert_one(cpy_data)
+        return { 'message': 'success', 'data': {'inserted_id': ObjectId(ins.inserted_id)} }
+
 
 
     def createMany(self, dataList):
@@ -108,7 +114,7 @@ class recordDAO(object):
             if self.exists(data):   # avoid duplicates
                 ret.remove(data)
             else:
-                data['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                data['created_at'] = datetime.now()
         
-        self.db.insert_many(ret)
-        return ret
+        ins = self.db.insert_many(ret)
+        return { 'message': 'success', 'data': {'inserted_ids': ins.inserted_ids} }

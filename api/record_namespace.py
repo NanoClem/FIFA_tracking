@@ -76,7 +76,7 @@ class Record(Resource):
 #---------------------------------------------
 #   CRUD BY ID
 #---------------------------------------------
-@ns.route(single_route + "/<string:id>")
+@ns.route(single_route + "/<objectid:id>")
 @ns.response(404, 'Record data not found')
 @ns.param('id', 'The record data unique identifier')
 class RecordByID(Resource):
@@ -109,7 +109,7 @@ class RecordByID(Resource):
 #---------------------------------------------
 #   CRUD BY TEAM
 #---------------------------------------------
-@ns.route(many_route + "/teams/<string:id>")
+@ns.route(many_route + "/teams/<objectid:id>")
 @ns.response(404, 'Record data not found')
 @ns.param('id', 'A reference to the team by its id ')
 class RecordsTeamById(Resource):
