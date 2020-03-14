@@ -1,3 +1,4 @@
+from flask import make_response
 from flask_restplus import Namespace, Resource, fields
 from datetime import datetime
 from bson.objectid import ObjectId
@@ -43,19 +44,18 @@ class RecordList(Resource):
     """
 
     @ns.doc('get all collections') #, security='apikey')
-    @ns.marshal_list_with(record) #envelope='data')
+    #@ns.marshal_list_with(record) #envelope='data')
     #@token_required
     def get(self):
         """Return a list of all records data"""
-        return DAO.getAll(), 200
+        return make_response(DAO.getAll(), 200)
 
 
     @ns.doc('create many collections')
     @ns.expect(record)
-    @ns.marshal_list_with(record, code=201)
     def post(self):
         """Create multiple data records"""
-        return DAO.createMany(ns.payload), 201
+        return make_response(DAO.createMany(ns.payload), 201)
 
 
 #---------------------------------------------
@@ -70,7 +70,7 @@ class Record(Resource):
     @ns.expect(record)
     def post(self):
         """Create a new record data"""
-        return DAO.create(ns.payload), 201
+        return make_response(DAO.create(ns.payload), 201)
 
 
 #---------------------------------------------
@@ -88,14 +88,14 @@ class RecordByID(Resource):
     @ns.marshal_with(record)
     def get(self, id):
         """Returns a single data collection by id"""
-        return DAO.getByID(id), 200
+        return make_response(DAO.getByID(id), 200)
 
 
     @ns.doc('update_record')
     def put(self, id):
         """Update a data collection"""
         DAO.update(id, ns.payload)
-        return '', 201
+        return make_response('', 201)
 
 
     @ns.doc('delete_record')
@@ -103,7 +103,7 @@ class RecordByID(Resource):
     def delete(self, id):
         """Delete a data collection"""
         DAO.delete(id)
-        return '', 204
+        return make_response('', 204)
 
 
 #---------------------------------------------
@@ -121,4 +121,4 @@ class RecordsTeamById(Resource):
     @ns.marshal_list_with(record, envelope='data')
     def get(self, name):
         """Returns all data collections related to a team"""
-        return DAO.getByTeamId(name), 200
+        return make_response(DAO.getByTeamId(name), 200)

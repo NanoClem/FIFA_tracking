@@ -1,6 +1,5 @@
-from flask_restplus import marshal
+from flask import jsonify
 from datetime import datetime
-from bson.objectid import ObjectId
 from bson.json_util import dumps
 from bson.errors import InvalidId
 
@@ -44,9 +43,9 @@ class recordDAO(object):
         
         """
         try:
-            data = self.db.find_one({"_id": ObjectId(id)})
+            data = self.db.find_one({"_id": id})
             if data != None:
-                return data
+                return jsonify( {'message': 'success', 'data': data} )
             self.ns.abort(404, message="Id {} doesn't exist".format(id), data={})
         except InvalidId:
             self.ns.abort(422, message="Invalid id {}".format(id), data={})
@@ -76,9 +75,9 @@ class recordDAO(object):
         -----
         id (string) : the team id
         """
-        cursor = list(self.db.find({"team_id": ObjectId(id)}))
+        cursor = list(self.db.find({"team_id": id}))
         if cursor :
-            return cursor
+            return jsonify( {'message': 'success', 'data': cursor} )
         self.ns.abort(404, message="record {} doesn't exist".format(id), data={})
 
 
@@ -89,8 +88,8 @@ class recordDAO(object):
 
     def getAll(self):
         """ Get all documents in database """
-        cursor = self.db.find({})
-        return list(cursor)
+        cursor = list(self.db.find({}))
+        return jsonify( {'message': 'success', 'data': cursor} )
 
 
 
@@ -102,19 +101,19 @@ class recordDAO(object):
         cpy_data = data
         cpy_data['created_at'] = datetime.now()
         ins = self.db.insert_one(cpy_data)
-        return { 'message': 'success', 'data': {'inserted_id': ObjectId(ins.inserted_id)} }
+        return jsonify( {'message': 'success', 'data': {'inserted_id': ins.inserted_id}} )
 
 
 
     def createMany(self, dataList):
         """ Create multiple data documents"""
-        ret = dataList
+        cpy_data = dataList
         # PRE-PROCESS DATA IN LIST
         for data in dataList:
             if self.exists(data):   # avoid duplicates
-                ret.remove(data)
+                cpy_data.remove(data)
             else:
                 data['created_at'] = datetime.now()
         
-        ins = self.db.insert_many(ret)
-        return { 'message': 'success', 'data': {'inserted_ids': ins.inserted_ids} }
+        ins = self.db.insert_many(cpy_data)
+        return jsonify( {'message': 'success', 'data': {'inserted_ids': ins.inserted_ids}} )
