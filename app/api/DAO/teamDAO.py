@@ -63,25 +63,6 @@ class TeamDAO(object):
         self.db.delete_one(data)
 
 
-
-    #---------------------------------------------
-    #   BY TEAMS ID
-    #---------------------------------------------
-
-    def getByTeamId(self, id):
-        """Return all data collections related to a team
-        
-        Parameter
-        -----
-        id (string) : the team id
-        """
-        cursor = list(self.db.find({"team_id": id}))
-        if cursor :
-            return jsonify( {'message': 'success', 'data': cursor} )
-        self.ns.abort(404, message="record {} doesn't exist".format(id), data={})
-
-
-
     #---------------------------------------------
     #   COMMON OPERATIONS
     #---------------------------------------------

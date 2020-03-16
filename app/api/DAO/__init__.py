@@ -1,1 +1,2 @@
-from .recordDAO import recordDAO
+from .RecordDAO import RecordDAO
+from .TeamDAO import TeamDAO

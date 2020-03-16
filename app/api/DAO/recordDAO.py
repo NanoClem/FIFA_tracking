@@ -5,7 +5,7 @@ from bson.errors import InvalidId
 
 
 
-class recordDAO(object):
+class RecordDAO(object):
     """
     """
 

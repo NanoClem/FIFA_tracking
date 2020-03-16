@@ -7,7 +7,7 @@ from bson.errors import InvalidId
 
 from configs import mongo
 from .models import create_record_model
-from .DAO import recordDAO
+from .DAO import RecordDAO
 from .auth import token_required
 
 
@@ -25,7 +25,7 @@ record = create_record_model(ns)
 #=============================================================
 #   DAO
 #=============================================================
-DAO = recordDAO(db, ns)
+DAO = RecordDAO(db, ns)
 
 
 #=============================================================

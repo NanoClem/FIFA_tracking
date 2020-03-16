@@ -52,7 +52,7 @@ def create_team_model(ns):
     team_model = ns.model("Teams", {
         "_id"               : fields.String(description="The unique identifier of the team"),
         "name"              : fields.String(required=True, description="The name of the soccer team"),
-        "players"           : fields.List(create_player_model(ns), required=True, description="List of the team's players"),
+        "players"           : fields.List(fields.Nested(create_player_model(ns)), required=True, description="List of the team's players"),
         "jersey"            : fields.Nested(create_jersey_model(ns), required=True, description="Information about the jersey of the team"),
         "goalkeeper_jersey" : fields.Nested(create_jersey_model(ns), required=True, description="Information about the jersey of the goalkeeper"),
         "tactic"            : fields.String(required=True, description="How the team is positioned of the field"),
