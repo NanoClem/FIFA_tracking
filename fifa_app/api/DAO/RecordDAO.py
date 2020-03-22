@@ -44,7 +44,7 @@ class RecordDAO(object):
         """
         try:
             data = self.db.find_one({"_id": id})
-            if data != None:
+            if data :
                 return jsonify( {'message': 'success', 'data': data} )
             self.ns.abort(404, message="Id {} doesn't exist".format(id), data={})
         except InvalidId:
