@@ -1,1 +1,2 @@
-from .models import create_team_model, create_record_model
+from .team_model import create_team_model
+from .record_model import create_record_model
