@@ -1,6 +1,6 @@
 from flask_restplus import Api
 
-from fifa_app.auth import authorizations
+# from fifa_app.modules.auth import authorizations
 
 
 # API constructor
@@ -15,8 +15,8 @@ api = Api(
 def register_api(app):
     """ Registering namespaces and the api to the app
     """
-    from .record_namespace import ns as ns_record
-    from .team_namespace import ns as ns_team
+    from fifa_app.modules.records import ns as ns_record
+    from fifa_app.modules.teams import ns as ns_team
     
     api.add_namespace(ns_record)  # adding record namespace
     api.add_namespace(ns_team)    # adding team namespace

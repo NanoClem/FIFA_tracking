@@ -6,7 +6,7 @@ from bson.errors import InvalidId
 from flask import make_response
 from flask_restplus import Resource
 
-from fifa_app.api.record_namespace import ns, db, DAO, record
+from fifa_app.modules.records import ns, db, DAO, record
 
 single_route = "/record"
 many_route   = "/records"
