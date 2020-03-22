@@ -1,6 +1,6 @@
 from flask_restplus import Api
 
-from .auth import authorizations
+from fifa_app.auth import authorizations
 
 
 # API constructor

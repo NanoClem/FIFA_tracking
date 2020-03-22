@@ -6,9 +6,9 @@ from bson.json_util import dumps
 from bson.errors import InvalidId
 
 from fifa_app.extensions import mongo
+from fifa_app.auth import token_required
 from .models import create_record_model
 from .DAO import RecordDAO
-from .auth import token_required
 
 
 # namespace and its metadata
