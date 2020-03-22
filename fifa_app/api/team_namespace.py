@@ -5,15 +5,15 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 from bson.errors import InvalidId
 
-from configs import mongo
+from fifa_app.extensions import mongo
 from .models import create_team_model
 from .DAO import TeamDAO
 from .auth import token_required
 
 
 # namespace and its metadata
-ns = Namespace('api', description = 'Team related operations', endpoint='team')
-db = mongo.db.records
+ns = Namespace('api/2', description = 'Team related operations', endpoint='team')
+db = mongo.db.teams
 
 
 #=============================================================

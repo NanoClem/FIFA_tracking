@@ -12,7 +12,6 @@ authorizations = {
 }
 
 
-
 # WRAPER FOR AUTHENTICATION
 def token_required(f):
     @wraps(f)

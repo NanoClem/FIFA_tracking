@@ -5,14 +5,16 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 from bson.errors import InvalidId
 
-from configs import mongo
+from fifa_app.extensions import mongo
 from .models import create_record_model
 from .DAO import RecordDAO
 from .auth import token_required
 
 
 # namespace and its metadata
-ns = Namespace('api', description = 'Records related operations', endpoint='record')
+ns = Namespace('api/1', description = 'Records related operations', endpoint='record')
+
+# db collection
 db = mongo.db.records
 
 
@@ -35,7 +37,7 @@ single_route = "/record"
 many_route   = "/records"
 
 #---------------------------------------------
-#   MANY DATA
+#   MANY DOCUMENTS
 #---------------------------------------------
 @ns.route(many_route, strict_slashes = False)     # strict_slashes setted to False so the debuger ignores it
 class RecordList(Resource):
@@ -59,7 +61,7 @@ class RecordList(Resource):
 
 
 #---------------------------------------------
-#   POST ONE DATA
+#   POST ONE DOCUMENT
 #---------------------------------------------
 @ns.route(single_route, strict_slashes = False)
 class Record(Resource):

@@ -1,7 +1,5 @@
 from flask_restplus import Api
 
-from .record_namespace import ns as ns_record
-from .team_namespace import ns as ns_team
 from .auth import authorizations
 
 
@@ -17,6 +15,9 @@ api = Api(
 def register_api(app):
     """ Registering namespaces and the api to the app
     """
+    from .record_namespace import ns as ns_record
+    from .team_namespace import ns as ns_team
+    
     api.add_namespace(ns_record)  # adding record namespace
     api.add_namespace(ns_team)    # adding team namespace
     api.init_app(app)
