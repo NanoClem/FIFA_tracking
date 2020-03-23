@@ -5,7 +5,7 @@ import numpy as np
 import time
 
 # Reading the video
-vidcap = cv2.VideoCapture('cutvideo3.mp4')
+vidcap = cv2.VideoCapture('capture.mp4')
 success, image = vidcap.read()
 count = 0
 success = True
