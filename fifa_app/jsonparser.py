@@ -9,6 +9,7 @@ class jsonparser:
             "positions" : []
         }
     
+
     def insertTeam(self, team1_name, team1_color, team2_name, team2_color):
         team1 = {
             "team1_id" : 1,
@@ -22,7 +23,12 @@ class jsonparser:
         }
         self.json["Team"].append([team1, team2])
 
-    def 
+
+    def insertTimeStamp(self, timestamp):
+        time = {
+            "timestamp" : timestamp
+        }
+        self.json["positions"].append(time)
 
 
 
