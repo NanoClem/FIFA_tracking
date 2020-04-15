@@ -31,16 +31,25 @@ class RecordDAO(object):
 
 
     #---------------------------------------------
-    #   BY ID
+    #   GET
     #---------------------------------------------
 
-    def getByID(self, id):
-        """Return data from one record
+    def getAll(self):
+        """ Get all frames stored in database 
+        """
+        cursor = list(self.db.find({}))
+        return jsonify( {'message': 'success', 'data': cursor} )
 
-        Parameter
-        ----
-        id (int) : the document unique id
-        
+
+    def get_frame(self, data):
+        """ Get one or many frame matching with the payload
+        """
+        cursor = list(self.db.find(data))
+        return jsonify( {'message': 'success', 'data': cursor} )
+
+
+    def getByID(self, id):
+        """ Get a frame by its id
         """
         try:
             data = self.db.find_one({"_id": id})
@@ -51,69 +60,55 @@ class RecordDAO(object):
             self.ns.abort(422, message="Invalid id {}".format(id), data={})
         
 
-    def update(self, id, data):
-        """Update a data collection"""
-        crypto = self.getByID(id)
-        self.db.update_one(crypto, data)
-
-
-    def delete(self, id):
-        """Delete a data collection"""
-        data = self.getByID(id)
-        self.db.delete_one(data)
-
-
-
     #---------------------------------------------
-    #   BY TEAMS ID
+    #   POST
     #---------------------------------------------
 
-    def getByTeamId(self, id):
-        """Return all data collections related to a team
-        
-        Parameter
-        -----
-        id (string) : the team id
-        """
-        cursor = list(self.db.find({"team_id": id}))
-        if cursor :
-            return jsonify( {'message': 'success', 'data': cursor} )
-        self.ns.abort(404, message="record {} doesn't exist".format(id), data={})
-
-
-
-    #---------------------------------------------
-    #   COMMON OPERATIONS
-    #---------------------------------------------
-
-    def getAll(self):
-        """ Get all documents in database """
-        cursor = list(self.db.find({}))
-        return jsonify( {'message': 'success', 'data': cursor} )
-
-
-
-    def create(self, data):
+    def create_frame(self, data):
         """ Create a new data document """
-        # if self.exists(data):
-        #     self.ns.abort(409, message="document already exists", data={})
-        # else:
+        if self.exists(data):
+            self.ns.abort(409, message="document already exists", data={})
+
         cpy_data = data
         cpy_data['created_at'] = datetime.now()
-        ins = self.db.insert_one(cpy_data)
-        return jsonify( {'message': 'success', 'data': {'inserted_id': ins.inserted_id}} )
-
+        res = self.db.insert_one(cpy_data)
+        return jsonify( {'message': 'success', 'data': {'inserted_id': res.inserted_id}} )
 
 
     def createMany(self, dataList):
         """ Create multiple data documents"""
         cpy_data = dataList
-        # PRE-PROCESS DATA IN LIST
         for data in dataList:
             if self.exists(data):   # avoid duplicates
                 cpy_data.remove(data)
             else:
                 data['created_at'] = datetime.now()
         
-        ins = self.db.insert_many(cpy_data)
-        return jsonify( {'message': 'success', 'data': {'inserted_ids': ins.inserted_ids}} )
+        res = self.db.insert_many(cpy_data)
+        return jsonify( {'message': 'success', 'data': {'inserted_ids': res.inserted_ids}} )
+
+
+    def update_frame(self, id, data):
+        """Update a data collection"""
+        crypto = self.getByID(id)
+        self.db.update_one(crypto, data)
+        return ''
+
+
+    #---------------------------------------------
+    #   DELETE
+    #---------------------------------------------
+
+    def delete_frame(self, frame):
+        """ Delete a frame
+        """
+        self.db.delete_one(frame)
+        return ''
+
+
+    def delete_by_id(self, id):
+        """ Delete a data collection
+        """
+        data = self.getByID(id)
+        self.db.delete_one(data)
+        return ''
