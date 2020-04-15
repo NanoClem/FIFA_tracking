@@ -13,22 +13,22 @@ idx = 0
 
 # Read the video frame by frame
 while success:
-    time.sleep(0.1)
+    # time.sleep(0.1)
     # converting into hsv image
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    cv2.imshow("lelel", hsv)
+    # cv2.imshow("lelel", hsv)
     #time.sleep(0.05)
-    # green range
+    # green range BGR
     lower_green = np.array([30, 80, 80])
     upper_green = np.array([50, 220, 120])
-    # blue range
-    lower_blue = np.array([110, 50, 50])
-    upper_blue = np.array([130, 255, 255])
+    # blue range BGR
+    lower_blue = np.array([215, 70, 15])
+    upper_blue = np.array([255, 100, 50])
 
-    # Red range
-    lower_red = np.array([0, 31, 255])
-    upper_red = np.array([176, 255, 255])
+    # Red range BGR
+    lower_red = np.array([19, 23, 215])
+    upper_red = np.array([49, 53, 255])
 
     # white range
     lower_white = np.array([0, 0, 255])
@@ -65,7 +65,7 @@ while success:
                 player_img = image[y:y + h, x:x + w]
                 player_hsv = cv2.cvtColor(player_img, cv2.COLOR_BGR2HSV)
                 # If player has blue jersy
-                mask1 = cv2.inRange(player_hsv, lower_white, upper_white)
+                mask1 = cv2.inRange(player_hsv, lower_blue, upper_blue)
                 res1 = cv2.bitwise_and(player_img, player_img, mask=mask1)
                 res1 = cv2.cvtColor(res1, cv2.COLOR_HSV2BGR)
                 res1 = cv2.cvtColor(res1, cv2.COLOR_BGR2GRAY)

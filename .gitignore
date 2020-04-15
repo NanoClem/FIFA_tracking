@@ -4,7 +4,7 @@ venv/
 # IDE
 .vscode/
 .idea/
-
+/fifa_app/frames/
 .env
 __pycache__/
 data/
