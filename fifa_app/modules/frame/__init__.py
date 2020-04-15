@@ -1,8 +1,8 @@
 from flask_restplus import Namespace
 
 from fifa_app.extensions import mongo
-from .models import create_record_model
-from .dao import RecordDAO
+from .models import create_frame_model
+from .dao import FrameDAO
 
 
 # NAMESPACE
@@ -11,8 +11,8 @@ ns = Namespace('api/frame',
                 endpoint='frame')
 
 db    = mongo.db.frames           # db collection
-model = create_record_model(ns)   # model
-DAO   = RecordDAO(db, ns)         # record controller
+model = create_frame_model(ns)    # model
+DAO   = FrameDAO(db, ns)         # record controller
 
 
 from .routes import *

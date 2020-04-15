@@ -32,7 +32,7 @@ class FrameList(Resource):
 
     @ns.doc('create_many_frames')
     @ns.response(201, 'Frame successfuly created')
-    @ns.expect(model)
+    @ns.expect([model])
     def post(self):
         """ Create many frames
         """
@@ -40,7 +40,7 @@ class FrameList(Resource):
 
 
 #---------------------------------------------
-#   POST ONE DOCUMENT
+#   ONE OR MANY DOCUMENT
 #---------------------------------------------
 
 @ns.route('/', strict_slashes = False)
@@ -62,7 +62,7 @@ class Frame(Resource):
     @ns.response(200, 'Success')
     @ns.expect(model)
     def get(self):
-        """ Get one or many frames matching with payload
+        """ Get one or many frames matching with given body
         """
         return make_response(DAO.get_frame(ns.payload), 200)
 
@@ -71,9 +71,29 @@ class Frame(Resource):
     @ns.response(204, 'Frame successfuly deleted')
     @ns.expect(model)
     def delete(self):
-        """ Delete a frame by its id
+        """ Delete one or many frame(s) matching with given body
         """
         return make_response(DAO.delete_frame(ns.payload), 204)
+
+
+#---------------------------------------------
+#   CRUD BY FRAME NUMBER
+#---------------------------------------------
+
+@ns.route("/<int:num>")
+@ns.response(404, 'Frame not found')
+@ns.param('num', 'The frame number')
+class FrameByNum(Resource):
+    """ Get, update or delete one frame by its num
+    """
+
+    @ns.doc('update_frame')
+    @ns.response(204, 'Frame successfuly updated')
+    @ns.expect(model)
+    def put(self, num):
+        """ Update a frame by its num
+        """
+        return make_response(DAO.update_frame(num, ns.payload), 204)
 
 
 #---------------------------------------------
@@ -95,6 +115,12 @@ class FrameByID(Resource):
         """
         return make_response(DAO.getByID(id), 200)
 
+    @ns.doc('delete_frame_by_id')
+    @ns.response(204, 'Frame successfuly deleted')
+    def delete(self, id):
+        """ Delete a frame by its id
+        """
+        return make_response(DAO.delete_by_id(id), 204)
 
     @ns.doc('update_frame')
     @ns.response(204, 'Frame successfuly updated')
@@ -103,11 +129,3 @@ class FrameByID(Resource):
         """ Update a frame by its id
         """
         return make_response(DAO.update_frame(id, ns.payload), 204)
-
-
-    @ns.doc('delete_frame_by_id')
-    @ns.response(204, 'Frame successfuly deleted')
-    def delete(self, id):
-        """ Delete a frame by its id
-        """
-        return make_response(DAO.delete_by_id(id), 204)

@@ -6,13 +6,13 @@ from .dao import TeamDAO
 
 
 # NAMESPACE
-ns = Namespace('api/2', 
+ns = Namespace('api/team', 
                 description = 'Team related operations', 
                 endpoint='team')
 
-db   = mongo.db.teams           # db collection
-team = create_team_model(ns)    # team model
-DAO  = TeamDAO(db, ns)          # team controller
+db    = mongo.db.teams           # db collection
+model = create_team_model(ns)    # model
+DAO   = TeamDAO(db, ns)          # controller
 
 
 from .routes import *

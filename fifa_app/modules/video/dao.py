@@ -5,7 +5,7 @@ from bson.errors import InvalidId
 
 
 
-class FrameDAO(object):
+class VideoDAO(object):
     """
     """
 
@@ -35,21 +35,21 @@ class FrameDAO(object):
     #---------------------------------------------
 
     def getAll(self):
-        """ Get all frames stored in database 
+        """ Get all videos stored in database 
         """
         cursor = list(self.db.find({}))
         return jsonify(cursor)
 
 
-    def get_frame(self, data):
-        """ Get one or many frame matching with the payload
+    def get_video(self, data):
+        """ Get one or many video matching with the payload
         """
         cursor = list(self.db.find(data))
         return jsonify(cursor)
 
 
     def getByID(self, id):
-        """ Get a frame by its id
+        """ Get a video by its id
         """
         try:
             data = self.db.find_one({"_id": id})
@@ -62,8 +62,8 @@ class FrameDAO(object):
     #   POST
     #---------------------------------------------
 
-    def create_frame(self, data):
-        """ Create a new data document
+    def create_video(self, data):
+        """ Create a new data document 
         """
         if self.exists(data):
             self.ns.abort(409, message="document already exists", data={})
@@ -75,7 +75,7 @@ class FrameDAO(object):
 
 
     def createMany(self, dataList):
-        """ Create multiple data documents
+        """ Create multiple videos
         """
         cpy_data = dataList
         for data in dataList:
@@ -88,10 +88,10 @@ class FrameDAO(object):
         return jsonify( {'inserted_ids': res.inserted_ids} )
 
 
-    def update_frame(self, num, data):
-        """ Update a frame
+    def update_frame(self, name, data):
+        """ Update a video
         """
-        frame = self.db.find({'num': num})
+        frame = self.db.find({'name': name})
         update = {'$set': data}
         self.db.update_one(frame, update)
         return ''
@@ -101,10 +101,10 @@ class FrameDAO(object):
     #   DELETE
     #---------------------------------------------
 
-    def delete_frame(self, frame):
-        """ Delete one or many frame(s), matching with payload
+    def delete_video(self, video):
+        """ Delete one or many video(s), matching with payload
         """
-        self.db.delete(frame)
+        self.db.delete(video)
         return ''
 
 
