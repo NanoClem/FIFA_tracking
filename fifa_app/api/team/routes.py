@@ -6,7 +6,7 @@ from bson.errors import InvalidId
 from flask import make_response
 from flask_restplus import Resource
 
-from fifa_app.modules.team import ns, db, model, DAO
+from ..team import ns, db, model, DAO
 
 
 
