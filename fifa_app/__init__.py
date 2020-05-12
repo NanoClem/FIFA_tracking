@@ -20,7 +20,9 @@ def create_app(config_object='fifa_app.settings'):
     A Flask app object
     """
     # FLASK APP OBJECT
-    app = Flask(__name__, template_folder='views/templates')
+    app = Flask(__name__, 
+                template_folder='views/templates',
+                static_folder='views/static')
 
     # APP CONFIGS
     app.config.from_object(config_object)
