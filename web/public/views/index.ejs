@@ -4,25 +4,19 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
-        <script type="text/css" src="assets/css/heatmap_style.css"></script>
+        <script src='assets/js/lib/heatmap.min.js'></script>
         <title>Dashboard - Fifa Tracking</title>
     </head>
 
     <body>
         <h1>It Works !</h1>
 
-        <div id="demo-wrapper">
-            <div id="heatmap" style="position: relative;">
-                <svg class="heatmap-canvas" width="834" height="400">
-                    <script src="assets/js/field.js"></script>
-                </svg>
-            </div>
+        <div id="heatmap" style="width: 1150px; height:780px;">
+            <div id="field"></div>
         </div>
 
-        <script src='assets/js/lib/heatmap.min.js'></script>
         <script src="assets/js/test_heatmap.js"></script>
-
-        <!-- <div class="heatmap"></div> -->
+        <script src="assets/js/field.js"></script>
         
     </body>
     <script src="/reload/reload.js"></script>

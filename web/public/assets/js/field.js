@@ -1,17 +1,21 @@
-var linecolour = "#ffffff"   
-var fillcolour = "#A1C349"
+var linecolour = "#ffffff";   
+var fillcolour = "#A1C349";
+
+// dimensions
+var width = 1150;
+var height = 780;
 
 var svg = d3.select("#field") 
       .append("svg")           
-      .attr("width", 1150)      
-      .attr("height", 780);
+      .attr("width", width)      
+      .attr("height", height);
 			  
 // Total Grass    
 svg.append("rect")        // attach a rectangle
     .attr("x", 0)         // position the left of the rectangle
     .attr("y", 0)          // position the top of the rectangle
-    .attr("height", 780)    // set the height
-    .attr("width", 1150)    // set the width
+    .attr("height", height)    // set the height
+    .attr("width", width)    // set the width
     .style("fill", fillcolour);   // set the fill colour    
 
 // draw a rectangle pitch outline    
