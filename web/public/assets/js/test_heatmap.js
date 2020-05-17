@@ -1,4 +1,4 @@
-var heatmapContainer = document.querySelector('.heatmap');
+var heatmapContainer = document.getElementById('heatmap');
 
 // create instance
 var heatmapInstance = h337.create({
