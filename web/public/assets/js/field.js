@@ -144,22 +144,24 @@ svg.append("circle")        // attach a circle
 var vis = d3.select("body").append("svg")
 var pi = Math.PI;
     
-var arc = d3.svg.arc()
+var arc = d3.arc()
     .innerRadius(89)
     .outerRadius(94)
     .startAngle(0.64) //radians
     .endAngle(2.5) //just radians
     
-var arc2 = d3.svg.arc()
+var arc2 = d3.arc()
     .innerRadius(89)
     .outerRadius(94)
     .startAngle(-0.64) //radians
     .endAngle(-2.5) //just radians
-    svg.append("path")
+
+svg.append("path")
     .attr("d", arc)
     .attr("fill", linecolour)
     .attr("transform", "translate(160,390)")
-    svg.append("path")
+    
+svg.append("path")
     .attr("d", arc2)
     .attr("fill", linecolour)
     .attr("transform", "translate(990,390)");
