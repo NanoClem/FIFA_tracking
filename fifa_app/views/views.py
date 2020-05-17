@@ -15,3 +15,10 @@ class Heatmap(MethodView):
     """
     def get(self):
         return render_template('heatmap.html', title='Heatmap')
+
+
+class Field(MethodView):
+    """
+    """
+    def get(self):
+        return render_template('field.html', title='Field')
