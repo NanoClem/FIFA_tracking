@@ -1,0 +1,8 @@
+[
+    {"zone": "1", "count": 10, "perc": 10},
+    {"zone": "2", "count": 20, "perc": 20},
+    {"zone": "3", "count": 30, "perc": 30},
+    {"zone": "4", "count": 10, "perc": 10},
+    {"zone": "5", "count": 10, "perc": 10},
+    {"zone": "6", "count": 10, "perc": 10}
+]
