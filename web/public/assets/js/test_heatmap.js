@@ -1,18 +1,7 @@
-// var heatmapContainer = document.getElementById('heatmap');
+// configs
+var config = {
 
-// // create instance
-// var heatmapInstance = h337.create({
-//     container: heatmapContainer,
-//     radius: 90
-//   });
-
-// document.getElementById('field').onmousemove = function(ev) {
-//     heatmapInstance.addData({
-//         x: ev.layerX,
-//         y: ev.layerY,
-//         value: 1
-//     });
-// };
+}
 
 // minimal heatmap instance configuration
 var heatmapInstance = h337.create({
