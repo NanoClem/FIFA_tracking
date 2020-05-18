@@ -5,8 +5,9 @@ var fillcolour = "#A1C349";
 var width = 1150;
 var height = 780;
 
-var svg = d3.select("#field") 
-      .append("svg")           
+var svg = d3.select("#heatmap") 
+      .append("svg")
+      .attr("id", "field")          
       .attr("width", width)      
       .attr("height", height);
 			  
@@ -20,6 +21,7 @@ svg.append("rect")        // attach a rectangle
 
 // draw a rectangle pitch outline    
 svg.append("rect")        // attach a rectangle
+    .attr('class', 'half-field')
     .attr("x", 50)         // position the left of the rectangle
     .attr("y", 50)          // position the top of the rectangle
     .attr("height", 680)    // set the height
@@ -36,7 +38,7 @@ svg.append("rect")        // attach a rectangle
     .attr("width", 525)    // set the width
     .style("stroke-width", 5)    // set the stroke width
     .style("stroke", linecolour)   // set the line colour
-    .style("fill", "none");    // set the fill colour 
+    .style("fill", "none");    // set the fill colour
 
 
 // draw a rectangle - half 2
@@ -142,11 +144,6 @@ svg.append("circle")        // attach a circle
     .attr("cy", 390)           // position the y-centre
     .attr("r", 5)             // set the radius
     .style("fill", linecolour);     // set the fill colour
-
-
-// penalty box semi-circle 1
-var vis = d3.select("body").append("svg")
-var pi = Math.PI;
     
 var arc = d3.arc()
     .innerRadius(89)
@@ -169,3 +166,30 @@ svg.append("path")
     .attr("d", arc2)
     .attr("fill", linecolour)
     .attr("transform", "translate(990,390)");
+
+
+/* ==================================================
+    ////////// INTERACTIONS //////////
+===================================================*/
+
+svg.selectAll("rect")
+
+    // MOUSEOVER
+    .on("mouseover", function (d) {
+        console.log("mouseover");
+        d3.select(this)
+            .style('fill', 'white')
+            .style('opacity', 0.2)
+    })
+
+    // MOUSEOUT
+    .on("mouseout", function (d) {
+        d3.select(this)
+            .style('fill', fillcolour)
+            .style('opacity', 1)
+    })
+
+    // CLICK
+    .on("click", function (d) {
+        console.log("click");
+    });
