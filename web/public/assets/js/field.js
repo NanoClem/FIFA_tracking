@@ -6,8 +6,7 @@ var width = 1150;
 var height = 780;
 
 var svg = d3.select("#field") 
-      .append("svg")
-      .attr("id", "field")          
+      .append("svg")    
       .attr("width", width)      
       .attr("height", height);
 			  
