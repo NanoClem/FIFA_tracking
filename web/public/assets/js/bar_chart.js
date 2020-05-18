@@ -1,4 +1,5 @@
-var formatAsInteger = d3.format(",")
+var formatAsInteger = d3.format(",");
+var colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"];
 
 
 /**
@@ -6,11 +7,11 @@ var formatAsInteger = d3.format(",")
  */
 function createDims() {
 
-    var margin = {top: 30, rigth: 5, bottom: 20, left: 50},
-        width  = 900 - margin.left - margin.rigth,
+    var margin = {top: 30, rigth: 0, bottom: 20, left: 0},
+        width  = 1050 - margin.left - margin.rigth,
         height = 400 - margin.top - margin.bottom,
         colorBar = d3.scale.category20(),
-        barPadding = 1;
+        barPadding = 0;
 
     return {
         margin: margin,
@@ -53,6 +54,13 @@ function barChart() {
     d3.json("assets/datasets/data_bar.json", function(err, data) {
         if (err) throw err;
 
+        // colors
+        var colorScale = d3.scale.quantile()
+            .domain([0, colors.length-1, d3.max(data, function(d) {
+                return d.count;
+            })])
+            .range(colors);
+
         // axis domains
         xScale.domain([0, data.length]);
         yScale.domain([0, d3.max(data, function (d) { return d.count; })]);
@@ -66,7 +74,9 @@ function barChart() {
                 .attr("width", width / data.length - barPadding)
                 .attr("y", function (d) { return yScale(d.count); })
                 .attr("height", function (d) { return height-yScale(d.count); })
-                .attr("fill", "lightgrey");
+                .attr("fill", function (d) {
+                    return colorScale(d.count);
+                });
 
         // add y labels to plot
         plot.selectAll("text")
@@ -79,7 +89,7 @@ function barChart() {
             .attr("x", function (d, i) {
                 return (i * (width / data.length)) + ((width / data.length - barPadding) / 2);
             })
-            .attr("y", function (d) { return yScale(d.count) + 20;} )
+            .attr("y", function (d) { return yScale(d.count) + 30;} )
             .attr("class", "yAxis");
 
         // add x label to chart

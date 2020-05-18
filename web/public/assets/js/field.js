@@ -5,7 +5,7 @@ var fillcolour = "#A1C349";
 var width = 1150;
 var height = 780;
 
-var svg = d3.select("#heatmap") 
+var svg = d3.select("#field") 
       .append("svg")
       .attr("id", "field")          
       .attr("width", width)      
@@ -145,13 +145,13 @@ svg.append("circle")        // attach a circle
     .attr("r", 5)             // set the radius
     .style("fill", linecolour);     // set the fill colour
     
-var arc = d3.arc()
+var arc = d3.svg.arc()
     .innerRadius(89)
     .outerRadius(94)
     .startAngle(0.64) //radians
     .endAngle(2.5) //just radians
     
-var arc2 = d3.arc()
+var arc2 = d3.svg.arc()
     .innerRadius(89)
     .outerRadius(94)
     .startAngle(-0.64) //radians
