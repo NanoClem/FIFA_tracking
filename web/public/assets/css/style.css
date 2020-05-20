@@ -1,0 +1,41 @@
+#dashboard {
+    position: relative;
+    width: auto;
+}
+
+#field {
+    position: absolute;
+}
+
+#heatmap {
+    position: absolute;
+    display: inline-block;
+    padding: 50px;
+}
+
+#heatmap canvas {
+    display: inline-block;
+    padding: 50px;
+}
+
+
+/* BAR CHART */
+
+#barChart {
+	position:absolute;
+    top:51%;
+    left:3%
+	/* height: 250px; */
+}
+
+.xAxis {
+    font-family: verdana;
+    font-size: 80%;
+    fill: black;
+}  
+
+.yAxis {
+    font-family: verdana;
+    font-size: 110%;
+    fill: white;
+}
