@@ -1,117 +1,137 @@
 
-var json = require('C:/Users/Boule/Downloads/chart_dataset.json');
+var json = require('../datasets/chart_dataset.json');
 
 
-function getVerticalChartBarPresence(data, minLength, maxLength){
-    var orientation = "vertical"
-    var lengthField = maxLength - minLength;
-    var parts = divideField(lengthField, minLength, maxLength);
-    var zones = createModelData();
-    var totalCount = 0
+/**
+ * 
+ * @param {*} totalSize 
+ * @param {*} minSize 
+ * @param {*} maxSize 
+ */
+function divideField(totalSize, minSize, maxSize) {
 
-    data.forEach(frame => {
-        frame['records'].forEach(record => {
-            totalCount++;
-            var zone = locateZone(record['position'], parts, orientation);
-            if (zone == 0){
-                zones[0]["team" + record["team_id"]]["count"] += 1;
-            }
-            if (zone == 1){
-                zones[1]["team" + record["team_id"]]["count"] += 1;
-            }
-            if (zone == 2){
-                zones[2]["team" + record["team_id"]]["count"] += 1;
-            }
-        });
-    });
-    zones.forEach(zone => {
-        zone["team1"]["perc"] = Math.round(zone["team1"]["count"] / totalCount * 100);
-        zone["team2"]["perc"] = Math.round(zone["team2"]["count"] / totalCount * 100);
-        console.log(zone)
-    });
-
-    return zones;
-};
-
-
-function getHorizontalChartBarPresence(data, minWidth, maxWidth){
-    var orientation = "horizontal"
-    var widthField = maxWidth - minWidth;
-    var parts = divideField(widthField, minWidth, maxWidth);
-    var zones = createModelData();
-    var totalCount = 0
-
-    data.forEach(frame => {
-        frame['records'].forEach(record => {
-            totalCount++;
-            var zone = locateZone(record['position'], parts, orientation);
-            if (zone == 0){
-                zones[0]["team" + record["team_id"]]["count"] += 1;
-            }
-            if (zone == 1){
-                zones[1]["team" + record["team_id"]]["count"] += 1;
-            }
-            if (zone == 2){
-                zones[2]["team" + record["team_id"]]["count"] += 1;
-            }
-        });
-    });
-    zones.forEach(zone => {
-        zone["team1"]["perc"] = Math.round(zone["team1"]["count"] / totalCount * 100);
-        zone["team2"]["perc"] = Math.round(zone["team2"]["count"] / totalCount * 100);
-        console.log(zone)
-    });
-
-    return zones;
-};
-
-
-function divideField(totalSize, minSize, maxSize){
     var div = Math.round(totalSize/3);
     var first_tierce = div + minSize;
     var second_tierce = div * 2 + minSize;
+
     return [minSize, first_tierce, second_tierce, maxSize];
 }
 
-function locateZone(position, parts, orientation){
-    var pos;
-    if (orientation == "vertical")
-        pos = position["x"];
-    else
-        pos = position["y"];
 
-    var zone = NaN;
+/**
+ * Compute the zone of the field in which a postion is
+ * @param {*} position 
+ * @param {*} parts 
+ * @param {*} orientation 
+ */
+function locateZone(position, parts, orientation) {
+
+    var pos = orientation == "vertical" ? position["x"]:position["y"];
+    var zone = null;
+    
     if( pos < parts[1])
         zone = 0;
     else if( pos >= parts[1] && pos < parts[2])
         zone = 1;
     else 
         zone = 2;
+
     return zone
-    
 }
 
 
-function createModelData(){
-    var zones = []
-    for (let i = 0; i < 3; i++) {
-        var zone = {
-            "zone": i,
-            "team1": {
-                "count": 0,
-                "perc": 0,
-            },
-            "team2": {
-                "count": 0,
-                "perc": 0,
-            }
-        }  
-        zones.push(zone)
+/**
+ * Compute the percentage of a value
+ * @param {Number} value 
+ * @param {Number} total 
+ */
+function getPercentage(value, total) {
+    return Math.round(100 * value/total );
+}
+
+
+function exists(team, array) {
+
+    if (array.length == 0)
+        return false;
+
+    for (let i = 0; i < array.length; i++) {
+        if (array[i]['team'] == team)
+            return true;
     }
-    return zones
+
+    return false;
 }
 
-getVerticalChartBarPresence(json, 12, 50)
 
-getHorizontalChartBarPresence(json, 12, 50)
+/**
+ * Create a data model for zones computing
+ */
+function createModelData() {
+
+    var ret = [];
+    var zone = {};
+
+    for(var i = 1; i<4; i++) {
+        zone = {
+            zone: i,
+            values: []
+        }
+        ret.push(zone);
+    }
+     
+    return ret;
+}
+
+
+/**
+ * 
+ * @param {JSON} data
+ * @param {String} orientation 
+ * @param {Number} min 
+ * @param {Number} max 
+ * 
+ * @returns {JSON}
+ */
+function getPresence(data, orientation, min, max) {
+    
+    let interval = max - min;
+    let parts = divideField(interval, min, max)
+    let ret = createModelData();
+    let totalCount = 0;
+
+    // Find occurences
+    data.forEach( frame => {
+        totalCount += frame['records'].length;
+        frame['records'].forEach( rec => {
+            let zone = locateZone(rec['position'], parts, orientation);     // find the zone the position belongs to
+            // first occurrence for this zone
+            if (!exists(rec['team_id'], ret[zone]['values'])) {
+                ret[zone]['values'].push({ 
+                    team: rec['team_id'],
+                    count: 1,
+                    perc: 0
+                });
+            } else {
+                ret[zone]['values'].forEach( val => {
+                    if (val['team'] == rec['team_id']) {
+                        val['count']++;
+                    }
+                });
+            }
+        });
+    });
+
+    // Compute percentage
+    ret.forEach( zone => {
+        zone['values'].forEach( team => {
+            team['perc'] = getPercentage(team['count'], totalCount);
+        });
+    });
+
+    return ret;
+}
+
+
+console.log(getPresence(json, 'vertical', 15, 20)[2]);
 
