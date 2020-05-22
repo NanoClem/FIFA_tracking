@@ -1,7 +1,4 @@
 
-var json = require('../datasets/chart_dataset.json');
-
-
 /**
  * 
  * @param {*} totalSize 
@@ -131,7 +128,3 @@ function getPresence(data, orientation, min, max) {
 
     return ret;
 }
-
-
-console.log(getPresence(json, 'vertical', 15, 20)[2]);
-

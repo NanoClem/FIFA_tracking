@@ -1,5 +1,6 @@
 var linecolour = "#ffffff";   
-var fillcolour = "#A1C349";
+var fillcolour = "#5aac44";
+var lineThick = 2;
 
 // dimensions
 var width = 1150;
@@ -25,7 +26,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 50)          // position the top of the rectangle
     .attr("height", 680)    // set the height
     .attr("width", 1050)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)   // set the line colour
     .style("fill", fillcolour);    // set the fill colour     
 
@@ -35,7 +36,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 50)          // position the top of the rectangle
     .attr("height", 680)    // set the height
     .attr("width", 525)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)   // set the line colour
     .style("fill", "none");    // set the fill colour
 
@@ -46,7 +47,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 50)          // position the top of the rectangle
     .attr("height", 680)    // set the height
     .attr("width", 525)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour 
 
@@ -56,7 +57,7 @@ svg.append("circle")          // attach a circle
     .attr("cx", 575)             // position the x-centre
     .attr("cy", 390)             // position the y-centre
     .attr("r", 91.5)               // set the radius
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)      // set the line colour
     .style("fill", "none");     // set the fill colour
 
@@ -67,7 +68,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 188.5)          // position the top of the rectangle
     .attr("height", 403)    // set the height
     .attr("width", 165)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour 
 
@@ -78,7 +79,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 188.5)          // position the top of the rectangle
     .attr("height", 403)    // set the height
     .attr("width", 165)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour 
 
@@ -88,7 +89,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 298.5)          // position the top of the rectangle
     .attr("height", 183)    // set the height
     .attr("width", 55)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour 
 
@@ -98,7 +99,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 298.5)          // position the top of the rectangle
     .attr("height", 183)    // set the height
     .attr("width", 55)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour 
 
@@ -108,7 +109,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 353.4)          // position the top of the rectangle
     .attr("height", 73.2)    // set the height
     .attr("width", 25)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour
     
@@ -118,7 +119,7 @@ svg.append("rect")        // attach a rectangle
     .attr("y", 353.4)          // position the top of the rectangle
     .attr("height", 73.2)    // set the height
     .attr("width", 25)    // set the width
-    .style("stroke-width", 5)    // set the stroke width
+    .style("stroke-width", lineThick)    // set the stroke width
     .style("stroke", linecolour)    // set the line colour
     .style("fill", "none");    // set the fill colour
 
@@ -144,13 +145,13 @@ svg.append("circle")        // attach a circle
     .attr("r", 5)             // set the radius
     .style("fill", linecolour);     // set the fill colour
     
-var arc = d3.svg.arc()
+var arc = d3.arc()
     .innerRadius(89)
     .outerRadius(94)
     .startAngle(0.64) //radians
     .endAngle(2.5) //just radians
     
-var arc2 = d3.svg.arc()
+var arc2 = d3.arc()
     .innerRadius(89)
     .outerRadius(94)
     .startAngle(-0.64) //radians
@@ -160,11 +161,13 @@ svg.append("path")
     .attr("d", arc)
     .attr("fill", linecolour)
     .attr("transform", "translate(160,390)")
+    .attr("stroke-width", lineThick)    // set the stroke width
     
 svg.append("path")
     .attr("d", arc2)
     .attr("fill", linecolour)
-    .attr("transform", "translate(990,390)");
+    .attr("transform", "translate(990,390)")
+    .attr("stroke-width", lineThick)    // set the stroke width
 
 
 /* ==================================================

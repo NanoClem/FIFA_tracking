@@ -22,20 +22,17 @@
 /* BAR CHART */
 
 #barChart {
-	position:absolute;
-    top:51%;
-    left:3%
+    position: absolute;
+    padding-top: 20%;
+    left: 3.5%;
 	/* height: 250px; */
 }
 
-.xAxis {
-    font-family: verdana;
-    font-size: 80%;
-    fill: black;
-}  
-
-.yAxis {
-    font-family: verdana;
-    font-size: 110%;
-    fill: white;
+text.yAxis {
+    fill:white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;  
+    font-weight: 400;
+    text-anchor: middle;
+  }
 }

@@ -1,24 +1,26 @@
-var formatAsInteger = d3.format(",");
-var colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"];
 
+/**
+ * print format integer
+ */
+var formatAsInteger = d3.format(",");
 
 /**
  * Create bar chart dimensions
  */
 function createDims() {
 
-    var margin = {top: 30, rigth: 0, bottom: 20, left: 0},
+    var margin = {top: 20, rigth: 30, bottom: 20, left: 40},
         width  = 1050 - margin.left - margin.rigth,
         height = 400 - margin.top - margin.bottom,
-        colorBar = d3.scale.category20(),
-        barPadding = 0;
+        barPadding = 0.05;
+        groupedBarPadding = 0;
 
     return {
         margin: margin,
         width: width,
         height: height,
-        colorBar: colorBar,
-        barPadding: barPadding
+        barPadding: barPadding,
+        groupedBarPadding: groupedBarPadding
     };
 }
 
@@ -32,12 +34,12 @@ function barChart() {
     var margin = dims.margin,
         width  = dims.width,
         height = dims.height,
-        colorBar = dims.colorBar,
-        barPadding = dims.barPadding
+        barPadding = dims.barPadding,
+        groupedBarPadding = dims.groupedBarPadding;
 
-    // scaling
-    var xScale = d3.scale.linear().range([0, width]);
-    var yScale = d3.scale.linear().range([height, 0]);
+    // color
+    var color = d3.scaleOrdinal()
+        .range(['#e41a1c','#377eb8']);
 
     // svg
     var svg = d3.select("#barChart")
@@ -50,64 +52,99 @@ function barChart() {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // get data
-    d3.json("assets/datasets/data_bar.json", function(err, data) {
+        
+    /*=======================================================================================
+     * ------------ GET DATA ------------ 
+     =======================================================================================*/
+    d3.json("assets/datasets/chart_dataset.json", function(err, data) {
         if (err) throw err;
 
-        // colors
-        var colorScale = d3.scale.quantile()
-            .domain([0, colors.length-1, d3.max(data, function(d) {
-                return d.count;
-            })])
-            .range(colors);
+        // min
+        var min = d3.min(data, function (records) {
+            return d3.min(records.records, function (d) { return d.position.y });
+        });
 
-        // axis domains
-        xScale.domain([0, data.length]);
-        yScale.domain([0, d3.max(data, function (d) { return d.count; })]);
+        // max
+        var max = d3.max(data, function (records) {
+            return d3.max(records.records, function (d) { return d.position.y });
+        });
 
-        // add rect
-        plot.selectAll("rect")
+        // format dataset
+        data = getPresence(data, 'vertical', min, max);
+
+        var groups = data.map(function (d) { return d.zone });
+        var subGroups = data[0].values.map(function (d) { return d.team; });
+
+        // maximum y scale value
+        var maxY = d3.max(data, function (zones) {
+            return d3.max(zones.values, function (d) { return d.count; });
+        });
+
+        var x0 = d3.scaleBand()
+            .rangeRound([0, width])
+            .domain(groups)
+            .paddingInner(barPadding);
+
+        var x1 = d3.scaleBand()
+            .domain(subGroups)
+            .rangeRound([0, x0.bandwidth()])
+            .paddingInner(groupedBarPadding);
+
+        var y = d3.scaleLinear()
+            .range([height, 0])
+            .domain([0, maxY]);
+
+        var slice = plot.selectAll(".slice")
             .data(data)
+            .enter()
+            .append("g")
+                .attr("transform", function(d) { return "translate(" + x0(d.zone) + ",0)"; });
+
+        slice.selectAll("rect")
+            .data(function (d) { return d.values; })
             .enter()
             .append("rect")
-                .attr("x", function (d, i) { return xScale(i) })
-                .attr("width", width / data.length - barPadding)
-                .attr("y", function (d) { return yScale(d.count); })
-                .attr("height", function (d) { return height-yScale(d.count); })
-                .attr("fill", function (d) {
-                    return colorScale(d.count);
-                });
+                .attr("x", function (d) { return x1(d.team); })
+                .attr("y", function (d) { return y(0); })
+                .attr("width", x1.bandwidth())
+                .attr("height", function (d) { return height - y(0); })
+                .style("fill", function(d) { return color(d.team); });
 
-        // add y labels to plot
-        plot.selectAll("text")
-        .data(data)
+        // ADD ANIMATION
+        slice.selectAll("rect")
+            .transition()
+            .delay(function (d) {return Math.random()*500;})
+            .duration(1000)
+            .attr("y", function(d) { return y(d.count); })
+            .attr("height", function(d) { return height - y(d.count); });
+
+       
+        //add y labels to plot
+        slice.selectAll("text")
+        .data(function (d) { return d.values; })
         .enter()
         .append("text")
-            .text(function (d) { return formatAsInteger(d3.round(d.perc)) + "%";} )
-            .attr("text-anchor", "middle")
-            // Set x position to the left edge of each bar plus half the bar width
-            .attr("x", function (d, i) {
-                return (i * (width / data.length)) + ((width / data.length - barPadding) / 2);
-            })
-            .attr("y", function (d) { return yScale(d.count) + 30;} )
-            .attr("class", "yAxis");
+            .text(function (d) { return formatAsInteger(d.perc) + "%";} )
+                .attr("x", function (d) {return x1(d.team) + x1.bandwidth()/2;})
+                .attr("y", function (d) { return y(d.count) + d.count*1.2 } )
+                .attr("class", "yAxis");
 
-        // add x label to chart
-        var xLabels = svg
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + (margin.top + height)  + ")");
+        // // add x label to chart
+        // // var xLabels = svg
+        // //     .append("g")
+        // //     .attr("transform", "translate(" + margin.left + "," + (margin.top + height)  + ")");
 
-        xLabels.selectAll("text.xAxis")
-            .data(data)
-            .enter()
-            .append("text")
-            .text(function (d) { return d.zone;})
-            // Set x position to the left edge of each bar plus half the bar width
-            .attr("x", function (d, i) {
-                return (i * (width / data.length)) + ((width / data.length - barPadding) / 2);  
-            })
-            .attr("y", 15)
-            .attr("class", "xAxis")
+        // // xLabels.selectAll("text.xAxis")
+        // //     .data(data)
+        // //     .enter()
+        // //     .append("text")
+        // //     .text(function (d) { return "zone " + d.zone;})
+        // //     Set x position to the left edge of each bar plus half the bar width
+        // //     .attr("x", function (d, i) {
+        // //         return (i * (width / data.length)) + ((width / data.length - barPadding) / 2);  
+        // //     })
+        // //     .attr("y", 15)
+        // //     .attr("class", "xAxis")
     });
 }
 
