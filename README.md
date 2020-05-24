@@ -40,10 +40,11 @@ Now to run the project, you will have to start the server
 
 This project was designed and conceived by four students :
 
-- [Clément Decoopman](https://github.com/NanoClem) ![github-small](https://avatars2.githubusercontent.com/u/43412314?s=460&u=96ac576c84ad4e3f0b6af1002802449eb0fb50a3&v=4)
-- [Evan Dadure](https://github.com/evandadure)
-- [Thomas Cormier](https://github.com/thomascormier) 
-- [Maxence Personnaz](https://github.com/MaxencePRSZ)
+[![](https://avatars3.githubusercontent.com/u/43412314?s=60&v=4)](https://github.com/thomascormier) 
+[![](https://avatars2.githubusercontent.com/u/33009785?s=60&v=4)](https://github.com/NanoClem)
+[![](https://avatars3.githubusercontent.com/u/22052945?s=60&v=4)](https://github.com/evandadure)
+[![](https://avatars3.githubusercontent.com/u/18655688?s=60&v=4)](https://github.com/MaxencePRSZ) 
+
 
 ## Project Status
 
