@@ -41,8 +41,8 @@ Now to run the project, you will have to start the server
 This project was designed and conceived by four students :
 
 [![](https://avatars3.githubusercontent.com/u/43412314?s=60&v=4)](https://github.com/thomascormier) 
-[![](https://avatars2.githubusercontent.com/u/33009785?s=60&v=4)](https://github.com/NanoClem)
 [![](https://avatars3.githubusercontent.com/u/22052945?s=60&v=4)](https://github.com/evandadure)
+[![](https://avatars2.githubusercontent.com/u/33009785?s=60&v=4)](https://github.com/NanoClem)
 [![](https://avatars3.githubusercontent.com/u/18655688?s=60&v=4)](https://github.com/MaxencePRSZ) 
 
 
