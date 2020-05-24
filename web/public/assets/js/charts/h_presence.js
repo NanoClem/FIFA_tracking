@@ -1,11 +1,10 @@
 // DIMENSIONS
-var margin = {top: 20, rigth: 30, bottom: 20, left: 40},
+var margin = {top: 0, rigth: 30, bottom: 0, left: 40},
     width  = 1050 - margin.left - margin.rigth,
-    height = 400 - margin.top - margin.bottom;
+    height = 680 - margin.top - margin.bottom;
 
 // color
-var color = d3.scaleOrdinal()
-    .range(['#e41a1c','#377eb8']);
+var color = ['#e41a1c','#377eb8'];
 
 // svg
 var svg = d3.select("#hbarChart")
@@ -74,7 +73,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
             .attr("y", function (d) { return y(d.zone) })
             .attr("width", function (d) { return width - x(0) })
             .attr("height", y.bandwidth())
-            .style("fill", "blue");
+            .style("fill", color[0]);
 
     // right side
     plot.selectAll(".rightSide")
@@ -86,7 +85,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
             .attr("y", function (d) { return y(d.zone) })
             .attr("width", function (d) { return width + x(0) })
             .attr("height", y.bandwidth())
-            .style("fill", "red");
+            .style("fill", color[1]);
 
     // ADD ANIMATION
     // left side

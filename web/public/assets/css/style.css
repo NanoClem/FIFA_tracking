@@ -21,11 +21,14 @@
 
 /* BAR CHART */
 
-#barChart {
+.barChart {
     position: absolute;
-    padding-top: 20%;
-    left: 3.5%;
-	/* height: 250px; */
+    display: inline-block;
+    padding: 50px;
+}
+
+#hbarChart rect {
+    opacity: 85%;
 }
 
 text.Axis {

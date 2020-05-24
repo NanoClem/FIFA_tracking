@@ -3,9 +3,9 @@
  */
 function createDims() {
 
-    var margin = {top: 20, rigth: 30, bottom: 20, left: 40},
+    var margin = {top: 500, rigth: 0, bottom: 40, left: 0},
         width  = 1050 - margin.left - margin.rigth,
-        height = 400 - margin.top - margin.bottom,
+        height = 680 - margin.top - margin.bottom,
         barPadding = 0.05;
         groupedBarPadding = 0;
 
@@ -71,7 +71,7 @@ function barChart() {
         var subGroups = data[0].values.map(function (d) { return d.team; });
 
         // maximum y scale value
-        var maxY = d3.max(data, function (zones) {
+        var yMax = d3.max(data, function (zones) {
             return d3.max(zones.values, function (d) { return d.count; });
         });
 
@@ -87,7 +87,7 @@ function barChart() {
 
         var y = d3.scaleLinear()
             .range([height, 0])
-            .domain([0, maxY]);
+            .domain([0, yMax]);
 
         var slice = plot.selectAll(".slice")
             .data(data)
@@ -121,8 +121,8 @@ function barChart() {
         .append("text")
             .text(function (d) { return formatAsInteger(d.perc) + "%";} )
                 .attr("x", function (d) {return x1(d.team) + x1.bandwidth()/2;})
-                .attr("y", function (d) { return y(d.count) + d.count*1.2 } )
-                .attr("class", "yAxis");
+                .attr("y", function (d) { return y(0) + 25 } )
+                .attr("class", "Axis");
     });
 }
 
