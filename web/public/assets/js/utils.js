@@ -1,3 +1,7 @@
+/**
+ * print format integer
+ */
+var formatAsInteger = d3.format(",");
 
 /**
  * 
@@ -23,7 +27,7 @@ function divideField(totalSize, minSize, maxSize) {
  */
 function locateZone(position, parts, orientation) {
 
-    var pos = orientation == "vertical" ? position["x"]:position["y"];
+    var pos = orientation == 'vertical' ? position['x']:position['y'];
     var zone = null;
     
     if( pos < parts[1])
@@ -62,21 +66,25 @@ function exists(team, array) {
 
 
 /**
- * Create a data model for zones computing
+ * Create a data model for zones
+ * @param {String} orientation 
  */
-function createModelData() {
+function createDataModel(orientation) {
 
     var ret = [];
     var zone = {};
-
-    for(var i = 1; i<4; i++) {
-        zone = {
-            zone: i,
-            values: []
+    
+    // checking orientation
+    if (orientation == 'vertical' || orientation == 'horizontal') {
+        for(var i = 1; i<4; i++) {
+            if (orientation == 'vertical')          // vertical zones
+                zone = {zone: i, values: []};
+            else if (orientation == 'horizontal')   // hoeizontal zones
+                zone = {zone: i};
+            ret.push(zone);
         }
-        ret.push(zone);
     }
-     
+
     return ret;
 }
 
@@ -90,25 +98,23 @@ function createModelData() {
  * 
  * @returns {JSON}
  */
-function getPresence(data, orientation, min, max) {
+function getVPresence(data, min, max) {
     
     let interval = max - min;
-    let parts = divideField(interval, min, max)
-    let ret = createModelData();
+    let parts = divideField(interval, min, max);
+    let orientation = 'vertical';
+    let ret = createDataModel(orientation);
     let totalCount = 0;
+    let zone;
 
-    // Find occurences
+    // count occurences
     data.forEach( frame => {
         totalCount += frame['records'].length;
         frame['records'].forEach( rec => {
-            let zone = locateZone(rec['position'], parts, orientation);     // find the zone the position belongs to
+            zone = locateZone(rec['position'], parts, orientation);     // find the zone the position belongs to
             // first occurrence for this zone
             if (!exists(rec['team_id'], ret[zone]['values'])) {
-                ret[zone]['values'].push({ 
-                    team: rec['team_id'],
-                    count: 1,
-                    perc: 0
-                });
+                ret[zone]['values'].push( {team: rec['team_id'], count: 1, perc: 0} );
             } else {
                 ret[zone]['values'].forEach( val => {
                     if (val['team'] == rec['team_id']) {
@@ -119,7 +125,7 @@ function getPresence(data, orientation, min, max) {
         });
     });
 
-    // Compute percentage
+    // compute each percentage
     ret.forEach( zone => {
         zone['values'].forEach( team => {
             team['perc'] = getPercentage(team['count'], totalCount);
@@ -127,4 +133,68 @@ function getPresence(data, orientation, min, max) {
     });
 
     return ret;
+}
+
+
+/**
+ * 
+ * @param {*} data 
+ * @param {*} min 
+ * @param {*} max 
+ */
+function getHPresence(data, min, max) {
+    
+    let interval = max - min;
+    let parts = divideField(interval, min, max)
+    let orientation = 'horizontal';
+    let ret = createDataModel(orientation);
+    let totalCount = 0;
+    let ids = [];
+    let tmpId;
+    let zone;
+
+    // cout occurences
+    data.forEach(frame => {
+        totalCount += frame['records'].length;
+        frame['records'].forEach(rec => {
+            // localise the zone which the position belongs to
+            zone = locateZone(rec['position'], parts, orientation);
+            tmpId = rec['team_id'];
+            // get all team ids
+            if (!ids.includes(tmpId)) 
+                ids.push(tmpId);
+            if (ret[zone].hasOwnProperty(tmpId)) {
+                ret[zone][tmpId]['count'] ++;
+            } else 
+                ret[zone][tmpId] = {count: 1, perc: 0};
+        });
+    });
+
+    // compute each percentage
+    ret.forEach(zone => {
+        
+        for(let i = 0; i < ids.length; i++)
+            zone[ids[i]]['perc'] = getPercentage(zone[ids[i]]['count'], totalCount);
+    });
+
+    return ret;
+}
+
+
+/**
+ * 
+ * @param {*} data 
+ */
+function getMaxPerSet(data) {
+
+    let max = 0;
+    data.forEach(zone => {
+        for (const key in zone) {
+            if (zone[key].constructor == Object && zone[key]['count'] > max) {  // check for each json object
+                max = zone[key]['count'];
+            }
+        }
+    });
+
+    return max;
 }

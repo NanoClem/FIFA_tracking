@@ -14,7 +14,7 @@ var heatmapInstance = h337.create({
   var max = 0;
   var width = 1050;
   var height = 680;
-  var len = 200;
+  var len = 50;
   
   while (len--) {
     var val = Math.floor(Math.random()*100);
@@ -22,7 +22,7 @@ var heatmapInstance = h337.create({
     var point = {
       x: Math.floor(Math.random()*width),
       y: Math.floor(Math.random()*height),
-      value: val
+      value: 100
     };
     points.push(point);
   }
