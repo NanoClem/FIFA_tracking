@@ -30,7 +30,6 @@ Once installed, do the following command in a terminal, in /web/ file
 ```Bash
 npm install
 ```
-
 Your project is now ready to be run.
 
 ## Usage
@@ -41,9 +40,9 @@ Now to run the project, you will have to start the server
 
 This project was designed and conceived by four students :
 
-- [Clément Decoopman](https://github.com/NanoClem)
+- [Clément Decoopman](https://github.com/NanoClem) ![github-small](https://avatars2.githubusercontent.com/u/43412314?s=460&u=96ac576c84ad4e3f0b6af1002802449eb0fb50a3&v=4)
 - [Evan Dadure](https://github.com/evandadure)
-- [Thomas Cormier](https://github.com/thomascormier)
+- [Thomas Cormier](https://github.com/thomascormier) 
 - [Maxence Personnaz](https://github.com/MaxencePRSZ)
 
 ## Project Status
