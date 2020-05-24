@@ -8,7 +8,7 @@ This project has two goals.
 - The first one is to analyze a FIFA 19 match and detect every player's positions on the minimap located at the very bottom of the screen. It will save the position on a distant database through an API.
 - The second use is the vizualisation part : After fetching data from database, it will display them on different vizulisation, as bar chart, heatmap etc...
 
-## Installation & execution
+## Installation
 
 In order to install the project on your local machine, you'll have to follow this steps :
 
@@ -29,20 +29,22 @@ Once installed, do the following command in a terminal, in /web/ file
 
 ```Bash
 npm install
-node app
 ```
 
-This message should appear
-
-```Bash
-waiting on http://localhost:5000
-```
+Your project is now ready to be run.
 
 ## Usage
 
 ## Support
 
 ## Authors
+
+This project was designed and conceived by four students :
+
+- [Clément Decoopman](https://github.com/NanoClem)
+- [Evan Dadure](https://github.com/evandadure)
+- [Thomas Cormier](https://github.com/thomascormier)
+- [Maxence Personnaz](https://github.com/MaxencePRSZ)
 
 ## Project Status
 
