@@ -1,5 +1,5 @@
 // DIMENSIONS
-var margin = {top: 0, rigth: 30, bottom: 0, left: 40},
+var margin = {top: 0, rigth: 300, bottom: 0, left: 300},
     width  = 1050 - margin.left - margin.rigth,
     height = 680 - margin.top - margin.bottom;
 
@@ -58,7 +58,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
     var y = d3.scaleBand()
         .rangeRound([0, height])
         .domain(groups)
-        .paddingInner(0.1)
+        .paddingInner(0.4)
 
 
     // DRAW CHART
@@ -71,7 +71,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
         .attr("class", "leftSide")
             .attr("x", function (d) { return x(0) })
             .attr("y", function (d) { return y(d.zone) })
-            .attr("width", function (d) { return width - x(0) })
+            .attr("width", function (d) { return -x(0) })
             .attr("height", y.bandwidth())
             .style("fill", color[0]);
 
@@ -83,7 +83,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
             .attr("class", "rightSide")
             .attr("x", function (d) { return x(0) })
             .attr("y", function (d) { return y(d.zone) })
-            .attr("width", function (d) { return width + x(0) })
+            .attr("width", function (d) { return -x(0) })
             .attr("height", y.bandwidth())
             .style("fill", color[1]);
 
