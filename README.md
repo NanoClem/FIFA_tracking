@@ -35,7 +35,7 @@ Your project is now ready to be run.
 
 ## Usage
 
-## Support
+Now to run the project, you will have to start the server
 
 ## Authors
 
@@ -48,3 +48,4 @@ This project was designed and conceived by four students :
 
 ## Project Status
 
+This project is currently in development
