@@ -1,17 +1,18 @@
 /**
- * print format integer
+ * Format integer for printing
  */
 var formatAsInteger = d3.format(",");
 
+
 /**
- * 
- * @param {*} totalSize 
- * @param {*} minSize 
- * @param {*} maxSize 
+ * Comoute the zones of the field
+ * @param {Number} totalSize 
+ * @param {Number} minSize 
+ * @param {Number} maxSize 
  */
 function divideField(totalSize, minSize, maxSize) {
 
-    var div = Math.round(totalSize/3);
+    var div = totalSize/3;
     var first_tierce = div + minSize;
     var second_tierce = div * 2 + minSize;
 
@@ -21,9 +22,9 @@ function divideField(totalSize, minSize, maxSize) {
 
 /**
  * Compute the zone of the field in which a postion is
- * @param {*} position 
- * @param {*} parts 
- * @param {*} orientation 
+ * @param {Object} position 
+ * @param {Array} parts computed zones of the field
+ * @param {String} orientation vertical or horizontal
  */
 function locateZone(position, parts, orientation) {
 
@@ -51,6 +52,13 @@ function getPercentage(value, total) {
 }
 
 
+/**
+ * Tell if a team exists or not in a dataset (as an array)
+ * @param {String} team 
+ * @param {Array} array 
+ * 
+ * @returns true if exists, otherwise false
+ */
 function exists(team, array) {
 
     if (array.length == 0)
@@ -90,13 +98,12 @@ function createDataModel(orientation) {
 
 
 /**
- * 
+ * Get the vertical presence ratio for each three zone of the field.
  * @param {JSON} data
- * @param {String} orientation 
- * @param {Number} min 
- * @param {Number} max 
+ * @param {Number} min minimum y coord of the dataset
+ * @param {Number} max maximum y coord of the dataset
  * 
- * @returns {JSON}
+ * @returns {JSON} new formatted dataset for vertical barchart visualization
  */
 function getVPresence(data, min, max) {
     
@@ -137,10 +144,12 @@ function getVPresence(data, min, max) {
 
 
 /**
+ * Get the horizontal presence ratio for each three zone of the field.
+ * @param {JSON} data
+ * @param {Number} min minimum x coord of the dataset
+ * @param {Number} max maximum x coord of the dataset
  * 
- * @param {*} data 
- * @param {*} min 
- * @param {*} max 
+ * @returns {JSON} new formatted dataset for horizontal barchart visualization
  */
 function getHPresence(data, min, max) {
     
@@ -153,7 +162,7 @@ function getHPresence(data, min, max) {
     let tmpId;
     let zone;
 
-    // cout occurences
+    // count occurences
     data.forEach(frame => {
         totalCount += frame['records'].length;
         frame['records'].forEach(rec => {
@@ -182,8 +191,8 @@ function getHPresence(data, min, max) {
 
 
 /**
- * 
- * @param {*} data 
+ * Get the maximum count value among all data sets
+ * @param {JSON} data 
  */
 function getMaxPerSet(data) {
 

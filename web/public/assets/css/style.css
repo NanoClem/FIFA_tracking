@@ -1,34 +1,78 @@
 #dashboard {
+    border: 4px solid black;
+    padding: 2%;
+}
+
+.boardSide {
+    border: 3px solid blue;
+    display: inline-block;
+}
+
+#leftBoard {
+    width: 1200px; 
+    height: 1680px;
+}
+
+#rightBoard {
+    width: 1200px; 
+    height: 1680px;
+}
+
+.heatmap_container {
+    border: 2px solid blue;
     position: relative;
-    width: auto;
+    width: 1150px; 
+    height: 780px;
+    padding: 2%;
+    margin-right: 5%;
 }
 
-#field {
+.field {
+    border: 1px solid blue;
+    margin-bottom: 2%;
     position: absolute;
 }
 
-#heatmap {
+/* #f1, #f2 {
+    transform: rotate(90deg);
+} */
+
+.heatmap {
+    border: 1px solid blue;
+    padding: 50px;
+    width: 1050px;
+    height: 680px;
     position: absolute;
+    /* transform: rotate(90deg); */
+}
+
+.heatmap canvas {
     display: inline-block;
     padding: 50px;
 }
 
-#heatmap canvas {
-    display: inline-block;
-    padding: 50px;
+
+/* BAR CHARTS */
+.chart_container {
+    border: 2px solid blue;
+    position: relative;
+    width: 1150px; 
+    height: 780px;
+    padding: 2%;
 }
-
-
-/* BAR CHART */
 
 .barChart {
-    position: absolute;
+    position: absolute;    
+    border: 1px solid blue;
+}
+
+.barChart svg {
     display: inline-block;
     padding: 50px;
 }
 
 #hbarChart rect {
-    opacity: 85%;
+    opacity: 80%;
 }
 
 text.Axis {

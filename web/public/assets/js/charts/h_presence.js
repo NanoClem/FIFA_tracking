@@ -1,5 +1,5 @@
 // DIMENSIONS
-var margin = {top: 0, rigth: 300, bottom: 0, left: 300},
+var margin = {top: 0, rigth: 400, bottom: 0, left: 400},
     width  = 1050 - margin.left - margin.rigth,
     height = 680 - margin.top - margin.bottom;
 
@@ -36,7 +36,6 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
 
     // format dataset
     data = getHPresence(data, min, max);
-    console.log(data);
 
     // seek maximum x scale value
     var xMax = getMaxPerSet(data);
@@ -71,7 +70,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
         .attr("class", "leftSide")
             .attr("x", function (d) { return x(0) })
             .attr("y", function (d) { return y(d.zone) })
-            .attr("width", function (d) { return -x(0) })
+            .attr("width", function (d) { return x(0) })
             .attr("height", y.bandwidth())
             .style("fill", color[0]);
 
@@ -83,7 +82,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
             .attr("class", "rightSide")
             .attr("x", function (d) { return x(0) })
             .attr("y", function (d) { return y(d.zone) })
-            .attr("width", function (d) { return -x(0) })
+            .attr("width", function (d) { return x(0) })
             .attr("height", y.bandwidth())
             .style("fill", color[1]);
 

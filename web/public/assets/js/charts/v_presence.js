@@ -1,35 +1,14 @@
 /**
- * Create bar chart dimensions
- */
-function createDims() {
-
-    var margin = {top: 500, rigth: 0, bottom: 40, left: 0},
-        width  = 1050 - margin.left - margin.rigth,
-        height = 680 - margin.top - margin.bottom,
-        barPadding = 0.05;
-        groupedBarPadding = 0;
-
-    return {
-        margin: margin,
-        width: width,
-        height: height,
-        barPadding: barPadding,
-        groupedBarPadding: groupedBarPadding
-    };
-}
-
-/**
  * Create bar chart
  */
 function barChart() {
 
     // dimensions
-    var dims = createDims();
-    var margin = dims.margin,
-        width  = dims.width,
-        height = dims.height,
-        barPadding = dims.barPadding,
-        groupedBarPadding = dims.groupedBarPadding;
+    var margin = {top: 500, rigth: 0, bottom: 40, left: 0},
+        width  = 1050 - margin.left - margin.rigth,
+        height = 680 - margin.top - margin.bottom,
+        barPadding = 0.05;
+        groupedBarPadding = 0;
 
     // color
     var color = d3.scaleOrdinal()
@@ -63,10 +42,10 @@ function barChart() {
             return d3.max(records.records, function (d) { return d.position.y });
         });
 
+        
         // format dataset
         data = getVPresence(data, min, max);
-        console.log(data);
-
+        
         var groups = data.map(function (d) { return d.zone });
         var subGroups = data[0].values.map(function (d) { return d.team; });
 
