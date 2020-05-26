@@ -98,30 +98,26 @@ def get_records_from_frame(frame, teamId1, teamId2, coords_field):
     for y in range(coords_field[1], coords_field[3]):
         for x in range(coords_field[0], coords_field[2]):
             if is_blue(frame[y, x, 0], frame[y, x, 1], frame[y, x, 2]) and is_valid_pixel(x, y, cancelled_blue_pixels):
-                # print("ici ça coince bleu")
-                rec = create_record_data(teamId1, x, y)
+                coords = normalize_coords(x,y,height,length,coords_field[0],coords_field[1])
+                rec = create_record_data(teamId1, coords[0], coords[1])
                 records.append(rec)
                 add_non_valid_pixels(x, y, cancelled_blue_pixels)
 
-                # print("BLUE " + str(frame[y, x]) + " " + str(x) + " " + str(y))
-                # print(normalize_coords(x, y, height, length, coords_field[0], coords_field[1]))
             if is_red(frame[y, x, 0], frame[y, x, 1], frame[y, x, 2]) and is_valid_pixel(x, y, cancelled_red_pixels):
-                # print("ici ça coince rouge")
-                rec = create_record_data(teamId2, x, y)
+                coords = normalize_coords(x,y,height,length,coords_field[0],coords_field[1])
+                rec = create_record_data(teamId1, coords[0], coords[1])
                 records.append(rec)
                 add_non_valid_pixels(x, y, cancelled_red_pixels)
 
-                # print("RED " + str(frame[y, x]) + " " + str(x) + " " + str(y))
-                # print(normalize_coords(x, y, height, length, coords_field[0], coords_field[1]))
-    # post_frame_API()
+
     return records
-    # time.sleep(1000)
 
 
-def post_all_frames(pathVideo, coords_field):
+def post_all_frames(pathVideo, coords_field, firstFrame, lastFrame):
     vidcap = cv2.VideoCapture(pathVideo)
     success, frame = vidcap.read()
     nb_frame = 0
+    nb_records = 0
     success = True
 
     videoId = get_video_id_API(pathVideo)
@@ -134,20 +130,22 @@ def post_all_frames(pathVideo, coords_field):
     while success:
 
         cv2.imshow('Match Detection', frame)
-        if nb_frame > 450: #the radar appears at ~500
+        if firstFrame < nb_frame < lastFrame : #the radar appears at ~500
             if nb_frame % 10 == 0: #every 10 frames we capture all positions, otherwise they don't move enough
                 records = get_records_from_frame(frame,teamId1,teamId2,coords_field)
                 if len(records)>15: #we capture frames only when there is more than 15 players, to avoid useless frames
                     frames.append(create_frame_data(videoId, nb_frame, records))
+                    nb_records+=len(records)
         nb_frame += 1
 
         print("FRAME" + str(nb_frame))
+        print("taille frames : " + str(nb_records))
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         success, frame = vidcap.read()
 
-    post_all_frames_API()
+    post_all_frames_API(frames)
 
     vidcap.release()
     cv2.destroyAllWindows()
@@ -156,7 +154,7 @@ def post_all_frames(pathVideo, coords_field):
 # ------------------------------
 
 coords_field = [449, 415, 791, 621]  # x,y of the upper-left corner, x,y of the bottow-right corner)
-post_all_frames('capture.mp4', coords_field)
+post_all_frames('capture.mp4', coords_field,450,2000)
 print(501 % 5)
 
 #
