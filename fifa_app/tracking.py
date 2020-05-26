@@ -3,116 +3,157 @@ import cv2
 import os
 import numpy as np
 import time
+import json
 
-# Reading the video
-vidcap = cv2.VideoCapture('capture.mp4')
-success, image = vidcap.read()
-count = 0
-success = True
-idx = 0
+import requests
 
-# Read the video frame by frame
-while success:
-    # time.sleep(0.1)
-    # converting into hsv image
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    # cv2.imshow("lelel", hsv)
-    #time.sleep(0.05)
-    # green range BGR
-    lower_green = np.array([30, 80, 80])
-    upper_green = np.array([50, 220, 120])
-    # blue range BGR
-    lower_blue = np.array([215, 70, 15])
-    upper_blue = np.array([255, 100, 50])
+def get_list_from_list(key,val,list):
+    for elem in list:
+        if elem[key] == val:
+            return elem
 
-    # Red range BGR
-    lower_red = np.array([19, 23, 215])
-    upper_red = np.array([49, 53, 255])
+    return "key doesn't exist"
 
-    # white range
-    lower_white = np.array([0, 0, 255])
-    upper_white = np.array([255, 255, 255])
+def is_blue(b, g, r):
+    if 190 <= b <= 250 and 65 <= g <= 100 and 10 <= r <= 60:
+        return True
+    return False
 
-    # Define a mask ranging from lower to upper
-    mask = cv2.inRange(hsv, lower_green, upper_green)
-    # Do masking
-    res = cv2.bitwise_and(image, image, mask=mask)
-    # convert to hsv to gray
-    res_bgr = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
-    res_gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("lelele", res_gray)
 
-    # Defining a kernel to do morphological operation in threshold image to
-    # get better output.
-    kernel = np.ones((13, 13), np.uint8)
-    thresh = cv2.threshold(res_gray, 127, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+def is_red(b, g, r):
+    if 15 <= b <= 60 and 0 <= g <= 50 and 170 <= r <= 250:
+        return True
+    return False
 
-    # find contours in threshold image
-    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    prev = 0
-    font = cv2.FONT_HERSHEY_SIMPLEX
+def is_valid_pixel(x, y, list_cancelled_pixels):
+    if [x, y] in list_cancelled_pixels:
+        # print("la paire est dans la liste des méchants !")
+        return False
+    # print("la paire n'est pas dans la liste des méchants")
+    return True
 
-    for c in contours:
-        x, y, w, h = cv2.boundingRect(c)
 
-        # Detect players
-        if (h >= (1.5) * w):
-            if (w > 15 and h >= 15):
-                idx = idx + 1
-                player_img = image[y:y + h, x:x + w]
-                player_hsv = cv2.cvtColor(player_img, cv2.COLOR_BGR2HSV)
-                # If player has blue jersy
-                mask1 = cv2.inRange(player_hsv, lower_blue, upper_blue)
-                res1 = cv2.bitwise_and(player_img, player_img, mask=mask1)
-                res1 = cv2.cvtColor(res1, cv2.COLOR_HSV2BGR)
-                res1 = cv2.cvtColor(res1, cv2.COLOR_BGR2GRAY)
-                nzCount = cv2.countNonZero(res1)
-                # If player has red jersy
-                mask2 = cv2.inRange(player_hsv, lower_red, upper_red)
-                res2 = cv2.bitwise_and(player_img, player_img, mask=mask2)
-                res2 = cv2.cvtColor(res2, cv2.COLOR_HSV2BGR)
-                res2 = cv2.cvtColor(res2, cv2.COLOR_BGR2GRAY)
-                nzCountred = cv2.countNonZero(res2)
+def add_non_valid_pixels(x, y, list_cancelled_pixels):
+    for i in range(x - 10, x + 10):
+        for j in range(y - 10, y + 10):
+            list_cancelled_pixels.append([i, j])
 
-                if (nzCount >= 20):
-                    # Mark blue jersy players as france
-                    cv2.putText(image, 'France', (x - 2, y - 2), font, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
-                    cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 3)
-                else:
-                    pass
-                if (nzCountred >= 20):
-                    # Mark red jersy players as belgium
-                    cv2.putText(image, 'Belgium', (x - 2, y - 2), font, 0.8, (0, 0, 255), 2, cv2.LINE_AA)
-                    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 3)
-                else:
-                    pass
-        if ((h >= 1 and w >= 1) and (h <= 30 and w <= 30)):
-            player_img = image[y:y + h, x:x + w]
 
-            player_hsv = cv2.cvtColor(player_img, cv2.COLOR_BGR2HSV)
-            # white ball  detection
-            mask1 = cv2.inRange(player_hsv, lower_white, upper_white)
-            res1 = cv2.bitwise_and(player_img, player_img, mask=mask1)
-            res1 = cv2.cvtColor(res1, cv2.COLOR_HSV2BGR)
-            res1 = cv2.cvtColor(res1, cv2.COLOR_BGR2GRAY)
-            nzCount = cv2.countNonZero(res1)
+def normalize_coords(x, y, height, length, x_start, y_start):
+    # x_start and y_start correspond to the coordonates of the upper left corner of the zone we're interested in
+    return [(x - x_start) / length, (y - y_start) / height]
 
-            if (nzCount >= 3):
-                # detect football
-                cv2.putText(image, 'football', (x - 2, y - 2), font, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
-                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-    cv2.imwrite("./Cropped/frame%d.jpg" % count, res)
-    print
-    'Read a new frame: ', success  # save frame as JPEG file
-    count += 1
-    cv2.imshow('Match Detection', image)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-    success, image = vidcap.read()
+def create_record_data(teamId, x, y):
+    return {
+        "team_id": teamId,
+        "position": {
+            "x": x,
+            "y": y
+        }
+    }
 
-vidcap.release()
-cv2.destroyAllWindows()
+
+def create_frame_data(videoId, numFrame, records):
+    return {
+        "video_id": videoId,
+        "num": numFrame,
+        "records": records
+    }
+
+
+
+
+def get_team_id_API(teamName):
+    r = requests.get("http://localhost:3000/api/team")
+    # print(r.json()[0]['_id'])
+
+    return get_list_from_list('name',teamName,r.json())['_id']
+
+
+def get_video_id_API(path):
+    r = requests.get("http://localhost:3000/api/video")
+    return get_list_from_list('path',path,r.json())['_id']
+
+
+def post_video_API(path):
+    params = {'path': path}
+    r = requests.post("http://localhost:3000/api/video", params=params)
+
+
+def post_all_frames_API(frames):
+
+    # print(frameData)
+    r = requests.post('http://localhost:3000/api/frame/many', json=frames)
+
+
+def get_records_from_frame(frame, teamId1, teamId2, coords_field):
+    cancelled_blue_pixels = []
+    cancelled_red_pixels = []
+    height = coords_field[3] - coords_field[1]
+    length = coords_field[2] - coords_field[0]
+    records = []
+    for y in range(coords_field[1], coords_field[3]):
+        for x in range(coords_field[0], coords_field[2]):
+            if is_blue(frame[y, x, 0], frame[y, x, 1], frame[y, x, 2]) and is_valid_pixel(x, y, cancelled_blue_pixels):
+                coords = normalize_coords(x,y,height,length,coords_field[0],coords_field[1])
+                rec = create_record_data(teamId1, coords[0], coords[1])
+                records.append(rec)
+                add_non_valid_pixels(x, y, cancelled_blue_pixels)
+
+            if is_red(frame[y, x, 0], frame[y, x, 1], frame[y, x, 2]) and is_valid_pixel(x, y, cancelled_red_pixels):
+                coords = normalize_coords(x,y,height,length,coords_field[0],coords_field[1])
+                rec = create_record_data(teamId1, coords[0], coords[1])
+                records.append(rec)
+                add_non_valid_pixels(x, y, cancelled_red_pixels)
+
+
+    return records
+
+
+def post_all_frames(pathVideo, coords_field, firstFrame, lastFrame):
+    vidcap = cv2.VideoCapture(pathVideo)
+    success, frame = vidcap.read()
+    nb_frame = 0
+    nb_records = 0
+    success = True
+
+    videoId = get_video_id_API(pathVideo)
+    teamId1 = get_team_id_API('Liverpool')
+    teamId2 = get_team_id_API('Madrid')
+    frames = []
+
+
+    # Read the video frame by frame
+    while success:
+
+        cv2.imshow('Match Detection', frame)
+        if firstFrame < nb_frame < lastFrame : #the radar appears at ~500
+            if nb_frame % 10 == 0: #every 10 frames we capture all positions, otherwise they don't move enough
+                records = get_records_from_frame(frame,teamId1,teamId2,coords_field)
+                if len(records)>15: #we capture frames only when there is more than 15 players, to avoid useless frames
+                    frames.append(create_frame_data(videoId, nb_frame, records))
+                    nb_records+=len(records)
+        nb_frame += 1
+
+        print("FRAME" + str(nb_frame))
+        print("taille frames : " + str(nb_records))
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        success, frame = vidcap.read()
+
+    post_all_frames_API(frames)
+
+    vidcap.release()
+    cv2.destroyAllWindows()
+
+
+# ------------------------------
+
+coords_field = [449, 415, 791, 621]  # x,y of the upper-left corner, x,y of the bottow-right corner)
+post_all_frames('capture.mp4', coords_field,450,2000)
+print(501 % 5)
+
