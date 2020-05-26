@@ -12,15 +12,16 @@ This project has two goals.
 
 In order to install the project on your local machine, you'll have to follow this steps :
 
-### Python installation
+- Download the project from this git
+- Install some mandatory python modules to analyze the location of each players.
 
-The python installation is mandatory to analyze the location of each players.
-
-At the root of the project, do this command in terminal :
+At the root of the project, in a terminal, type :
 
 ```Bash
 pip install -r requirements.txt
 ```
+
+///PARTIE CLEMENT SUR fLASK
 
 ### Node installation
 
@@ -34,7 +35,18 @@ Your project is now ready to be run.
 
 ## Usage
 
-Now to run the project, you will have to start the server
+Now to run the project, you will have to start Flask with 
+```Bash
+flask run
+```
+If you want to run the frames capture and positions tracking, run /core/tracking.py
+From here, you can
+- send a video to the API from its path
+- send teams to the API from their name
+- send the useful frames of a video to the API
+
+///PARTIE CLEMENT SUR USAGE DASHBOARD
+
 
 ## Authors
 
