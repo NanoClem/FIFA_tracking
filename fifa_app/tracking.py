@@ -1,10 +1,5 @@
 # Import libraries
 import cv2
-import os
-import numpy as np
-import time
-import json
-
 import requests
 
 
@@ -155,5 +150,5 @@ def post_all_frames(pathVideo, coords_field, firstFrame, lastFrame):
 
 coords_field = [449, 415, 791, 621]  # x,y of the upper-left corner, x,y of the bottow-right corner)
 post_all_frames('capture.mp4', coords_field,450,2000)
-print(501 % 5)
+
 
