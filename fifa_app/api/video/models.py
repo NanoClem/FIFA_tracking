@@ -5,6 +5,7 @@ def create_video_model(ns):
     """ Create a model for a video
     """
     return ns.model('Video', {
-        '_id'  : fields.String(decription='Video unique identifier'),
-        'path' : fields.String(description='path of the video file')
+        '_id'  : fields.String(decription='video unique identifier'),
+        'path' : fields.String(description='path of the video file'),
+        'title': fields.String(description='title of the video')
     })

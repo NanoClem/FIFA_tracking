@@ -88,12 +88,12 @@ class VideoDAO(object):
         return jsonify( {'inserted_ids': res.inserted_ids} )
 
 
-    def update_frame(self, name, data):
+    def update_video(self, id, data):
         """ Update a video
         """
-        frame = self.db.find({'name': name})
+        video = self.db.find({'_id': id})
         update = {'$set': data}
-        self.db.update_one(frame, update)
+        self.db.update_one(video, update)
         return ''
 
 
