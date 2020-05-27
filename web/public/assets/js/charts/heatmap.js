@@ -59,6 +59,24 @@ function updateHeatValues(data) {
     });
     // update data and repaint the heatmap
     heatData['heatmap'].setData(tmp);
+    heatData['heatmap'].repaint();
+  });
+}
+
+
+function listenHeatChange(heatmaps) {
+
+  d3.select("#heatSlider").on("change", function (d) {
+    let newValue = this.value;
+    let preparedData = [];
+    let tmpData = [];
+
+    heatmaps.forEach(h => {
+      tmpData = h.getData();
+      preparedData.push( {"heatmap": h, "data": tmpData, "new_value": newValue} );
+    });
+
+    updateHeatValues(preparedData);
   });
 }
 
@@ -92,28 +110,10 @@ function initHeatMaps() {
     let h1 = createHeatmap(config1, {pos: p['p1'], xMax: p['xMax'], yMax: p['yMax']}, w, h, max, val);
     let h2 = createHeatmap(config2, {pos: p['p2'], xMax: p['xMax'], yMax: p['yMax']}, w, h, max, val);
 
-
     // listening to heat slider change
-    d3.select("#heatSlider").on("change", function (d) {
-
-      // new slide value
-      let newValue = this.value;
-
-      // heatmap data
-      let d1 = h1.getData();
-      let d2 = h2.getData();
-
-      let prepared = [
-        {"heatmap": h1, "data": d1, "new_value": newValue},
-        {"heatmap": h2, "data": d2, "new_value": newValue}
-      ];
-      
-      // update heat values in each dataset
-      updateHeatValues(prepared);
-    })
-    
+    listenHeatChange([h1, h2]);
   });
 }
 
-// 
+
 initHeatMaps();
