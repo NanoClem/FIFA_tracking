@@ -52,6 +52,12 @@ body {
     opacity: 70%;
 }
 
+#heatUpdater {
+    background-color: aliceblue;
+    padding: 15px;
+    text-align: center;
+}
+
 
 /* BAR CHARTS */
 .chart_container {
