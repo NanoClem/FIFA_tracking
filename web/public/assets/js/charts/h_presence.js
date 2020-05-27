@@ -1,28 +1,34 @@
-// DIMENSIONS
-var margin = {top: 0, rigth: 400, bottom: 0, left: 400},
-    width  = 1050 - margin.left - margin.rigth,
-    height = 680 - margin.top - margin.bottom;
+/**
+ * Plot the bar chart which represents the horizontal presence
+ * @param {*} w 
+ * @param {*} h 
+ * @param {*} data 
+ */
+function plotHpresence(w, h, data, colors) {
 
-// color
-var color = ['#e41a1c','#377eb8'];
+    // DIMENSIONS
+    var margin = {top: 20, rigth: 133, bottom: 25, left: 130},
+    width  = w - margin.left - margin.rigth,
+    height = h - margin.top - margin.bottom;
 
-// svg
-var svg = d3.select("#hbarChart")
+    // color
+    var color = colors;
+
+    // svg
+    var svg = d3.select("#hbarChart")
     .append("svg")
         .attr("width", width + margin.left + margin.rigth)
         .attr("height", height + margin.top + margin.bottom)
         .attr("id", "hbarChartSVG");
 
-// plot
-var plot = svg.append("g")
+    // plot
+    var plot = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-/*=======================================================================================
+    /*=======================================================================================
     ------------ GET DATA ------------ 
-======================================================================================*/
-d3.json("assets/datasets/chart_dataset.json", function(err, data) {
-    if (err) throw err;
+    ======================================================================================*/
 
     // min
     var min = d3.min(data, function (records) {
@@ -39,10 +45,10 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
 
     // seek maximum x scale value
     var xMax = getMaxPerSet(data);
-    
+
     // all group names
     var groups = data.map(function (d) { return d.zone });
-    
+
     // all subgroup names
     var subGroups = Object.keys(data[0]);
     subGroups = subGroups.filter(key => key !== "zone");    // remove "zone" key to keep only subgroups
@@ -60,8 +66,10 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
         .paddingInner(0.4)
 
 
-    // DRAW CHART
-
+    /*=======================================================================================
+     * ------------ PLOT CHART ------------ 
+     =======================================================================================*/
+     
     // left side
     plot.selectAll(".leftSide")
         .data(data)
@@ -109,7 +117,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
         .enter()
         .append("text")
             .text(function (d) { return formatAsInteger(d[subGroups[0]].perc) + "%" })
-                .attr("x", function (d) { return x(-xMax/2) })
+                .attr("x", function (d) { return x(-width/2) })
                 .attr("y", function(d) {return y(d.zone) + y.bandwidth()/2})
                 .attr("class", "Axis");
     // right side
@@ -118,7 +126,7 @@ d3.json("assets/datasets/chart_dataset.json", function(err, data) {
         .enter()
         .append("text")
             .text(function (d) { return formatAsInteger(d[subGroups[1]].perc) + "%" })
-                .attr("x", function (d) { return x(xMax/2) })
+                .attr("x", function (d) { return x(width/2) })
                 .attr("y", function(d) {return y(d.zone) + y.bandwidth()/2})
                 .attr("class", "Axis");
-});
+}

@@ -45,10 +45,13 @@ function locateZone(position, parts, orientation) {
 /**
  * Compute the percentage of a value
  * @param {Number} value 
- * @param {Number} total 
+ * @param {Number} total
+ * @param {Number} digits
  */
-function getPercentage(value, total) {
-    return Math.round(100 * value/total );
+function getPercentage(value, total, digits) {
+
+    let rounded = Math.round(100*value/total);
+    return rounded.toFixed(digits);
 }
 
 
@@ -157,33 +160,43 @@ function getHPresence(data, min, max) {
     let parts = divideField(interval, min, max)
     let orientation = 'horizontal';
     let ret = createDataModel(orientation);
-    let totalCount = 0;
-    let ids = [];
-    let tmpId;
+    let countbyids = []
+    let tmpId = "";
+    let index = 0;
     let zone;
+    let totalCount = 0;
 
     // count occurences
     data.forEach(frame => {
-        totalCount += frame['records'].length;
         frame['records'].forEach(rec => {
             // localise the zone which the position belongs to
             zone = locateZone(rec['position'], parts, orientation);
             tmpId = rec['team_id'];
+            // find index of corresponding obj with its id
+            index = countbyids.findIndex(obj => { return obj.id == tmpId });
             // get all team ids
-            if (!ids.includes(tmpId)) 
-                ids.push(tmpId);
+            if (index < 0) {
+                countbyids.push({"id": tmpId, "count": 0});
+                index = countbyids.findIndex(obj => { return obj.id == tmpId });
+            }
+            // increment each count fields
+            countbyids[index]['count']++;           // increment count for this id
             if (ret[zone].hasOwnProperty(tmpId)) {
-                ret[zone][tmpId]['count'] ++;
-            } else 
+                ret[zone][tmpId]['count'] ++;       // increment count for this zone
+            } else {
                 ret[zone][tmpId] = {count: 1, perc: 0};
+            }
+                
         });
     });
-
+    
     // compute each percentage
     ret.forEach(zone => {
-        
-        for(let i = 0; i < ids.length; i++)
-            zone[ids[i]]['perc'] = getPercentage(zone[ids[i]]['count'], totalCount);
+        for(let i = 0; i < countbyids.length; i++) {
+            tmpId = countbyids[i]['id'];
+            zone[tmpId]['perc'] = getPercentage(zone[tmpId]['count'], countbyids[i]['count'], 1);
+        }
+            
     });
 
     return ret;

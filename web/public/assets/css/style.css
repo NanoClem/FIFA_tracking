@@ -1,74 +1,74 @@
-#dashboard {
-    border: 4px solid black;
-    padding: 2%;
+body {
+    background-color: #a4fba6;
+}
+
+#brand {
+    font-size: 25px;
+}
+
+#navbarDropdown {
+    font-size: 20px;
 }
 
 .boardSide {
-    border: 3px solid blue;
-    display: inline-block;
+    /* border: 3px solid blue; */
+    padding: 10px;
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#leftBoard {
-    width: 1200px; 
-    height: 1680px;
-}
 
-#rightBoard {
-    width: 1200px; 
-    height: 1680px;
-}
-
+/* HEATMAPS */
 .heatmap_container {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     position: relative;
-    width: 1150px; 
-    height: 780px;
-    padding: 2%;
-    margin-right: 5%;
+    width: 565px; 
+    height: 380px;
+    margin: 20px;
+}
+
+.heatmap_container p {
+    padding: 5px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
 }
 
 .field {
-    border: 1px solid blue;
-    margin-bottom: 2%;
     position: absolute;
 }
 
-/* #f1, #f2 {
-    transform: rotate(90deg);
-} */
-
 .heatmap {
-    border: 1px solid blue;
-    padding: 50px;
-    width: 1050px;
-    height: 680px;
+    width: 525px;
+    height: 340px;
+    margin: 0 auto;
     position: absolute;
-    /* transform: rotate(90deg); */
 }
 
 .heatmap canvas {
-    display: inline-block;
-    padding: 50px;
+    padding: 20px 0;
+    opacity: 70%;
 }
 
 
 /* BAR CHARTS */
 .chart_container {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     position: relative;
-    width: 1150px; 
-    height: 780px;
-    padding: 2%;
+    width: 780px; 
+    height: 520px;
+    margin: 20px;
 }
 
 .barChart {
-    position: absolute;    
-    border: 1px solid blue;
+    position: absolute;
+    margin: 0 auto;
 }
 
-.barChart svg {
-    display: inline-block;
-    padding: 50px;
+#vbarChart text.Axis {
+    padding: 20px;
 }
 
 #hbarChart rect {
@@ -78,7 +78,7 @@
 text.Axis {
     fill:white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;  
+    font-size: 18px;  
     font-weight: 400;
     text-anchor: middle;
 }

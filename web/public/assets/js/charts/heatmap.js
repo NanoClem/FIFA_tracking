@@ -47,10 +47,10 @@ function createHeatmap(config, positions, width, height, max, val) {
  */
 function initHeatMaps() {
   // params
-  var w = 1050,
-    h = 680,
+  var w = 525,
+    h = 340,
     max = 100,
-    val = 50,
+    val = 20,
     p = {};
 
   // configs
