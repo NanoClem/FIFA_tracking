@@ -109,7 +109,6 @@ class FrameByID(Resource):
 
     @ns.doc('get_frame_by_id')
     @ns.response(200, 'Success')
-    @ns.marshal_with(model)
     def get(self, id):
         """ Returns a frame by its id
         """
@@ -129,3 +128,22 @@ class FrameByID(Resource):
         """ Update a frame by its id
         """
         return make_response(DAO.update_frame(id, ns.payload), 204)
+
+
+#---------------------------------------------
+#   GET FRAMES BY VIDEO ID
+#---------------------------------------------
+
+@ns.route("/video/<string:id>")
+@ns.response(404, 'Frame not found')
+@ns.response(200, 'Success')
+@ns.param('id', 'The video unique identifier')
+class FrameByVideoID(Resource):
+    """ Get one or many frames by their video id
+    """
+
+    @ns.doc('get_frame_by_video_id')
+    def get(self, id):
+        """ Returns one or many frames by their video id
+        """
+        return make_response(DAO.getByVideoID(id), 200)

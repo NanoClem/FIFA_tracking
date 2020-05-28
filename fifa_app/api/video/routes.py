@@ -83,13 +83,12 @@ class Video(Resource):
 @ns.route("/<objectid:id>")
 @ns.response(404, 'Video not found')
 @ns.param('id', 'The video unique identifier')
-class FrameByID(Resource):
+class VideobyID(Resource):
     """ Get, update or delete one video
     """
 
     @ns.doc('get_video_by_id')
     @ns.response(200, 'Success')
-    @ns.marshal_with(model)
     def get(self, id):
         """ Returns a video by its id
         """
