@@ -26,7 +26,7 @@ function updateCharts(data) {
  * 
  * @param {*} data 
  */
-function upDateDashboard(data) {
+function upDateTeamNames(data) {
     // console.log(data);
 }
 
@@ -39,7 +39,7 @@ function upDateDashboard(data) {
 function upDateAll(err, resData) {
 
     if (err) throw err;
-    upDateDashboard(resData[1]);
+    upDateTeamNames(resData[1]);
     updateCharts(resData[0]);
 }
 
