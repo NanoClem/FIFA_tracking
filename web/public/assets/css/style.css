@@ -10,6 +10,12 @@ body {
     font-size: 20px;
 }
 
+#vidSelector {
+    float: left;
+    margin-top: 30px;
+    margin-left: 50px;
+}
+
 .boardSide {
     /* border: 3px solid blue; */
     padding: 10px;

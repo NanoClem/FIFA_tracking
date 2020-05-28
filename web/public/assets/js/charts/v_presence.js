@@ -4,7 +4,7 @@
  * @param {*} h 
  * @param {*} data 
  */
-function plotVpresence(w, h, data, colors) {
+function updateVpresence(w, h, data, colors) {
 
     // dimensions
     var margin = {top: 380, rigth: 25, bottom: 60, left: 20},
@@ -18,14 +18,14 @@ function plotVpresence(w, h, data, colors) {
         .range(colors);
 
     // svg
+    d3.select("#vbarChartSVG").remove();
     var svg = d3.select("#vbarChart")
         .append("svg")
             .attr("width", width + margin.left + margin.rigth)
             .attr("height", height + margin.top + margin.bottom)
             .attr("id", "vbarChartSVG");
 
-    var plot = svg
-        .append("g")
+    var plot = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         
@@ -103,4 +103,6 @@ function plotVpresence(w, h, data, colors) {
             .attr("x", function (d) {return x1(d.team) + x1.bandwidth()/2;})
             .attr("y", function (d) { return y(0) + 25 } )
             .attr("class", "Axis");
+
+    plot.exit().remove();
 }

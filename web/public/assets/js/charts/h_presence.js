@@ -4,7 +4,7 @@
  * @param {*} h 
  * @param {*} data 
  */
-function plotHpresence(w, h, data, colors) {
+function updateHpresence(w, h, data, colors) {
 
     // DIMENSIONS
     var margin = {top: 20, rigth: 133, bottom: 25, left: 130},
@@ -15,6 +15,7 @@ function plotHpresence(w, h, data, colors) {
     var color = colors;
 
     // svg
+    d3.select("#hbarChartSVG").remove();
     var svg = d3.select("#hbarChart")
     .append("svg")
         .attr("width", width + margin.left + margin.rigth)
@@ -129,4 +130,6 @@ function plotHpresence(w, h, data, colors) {
                 .attr("x", function (d) { return x(width/2) })
                 .attr("y", function(d) {return y(d.zone) + y.bandwidth()/2})
                 .attr("class", "Axis");
+
+    plot.exit().remove();
 }

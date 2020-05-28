@@ -28,22 +28,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Pick a video
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </div>
-                </li>
               </ul>
             </div>
         </nav>
 
-        
+        <!-- VIDEO SELECTOR -->
+        <div id="vidSelector">
+            <select id="vidList" class="form-control">
+                <option value="none" selected disabled hidden>Pick a video</option>
+            </select>
+        </div>
+
         <!-- DASHBOARD -->
         <div id="dashboard">
             <!-- UPPER SIDE OF DASHBOARD -->
@@ -53,18 +48,15 @@
                         <p id="team1">Team 1</p>
                     </div>
                     <div id="f1" class="field" ></div>
-                    <div id="heatmap1" class="heatmap"></div>
                 </div>
                 <div id="hc2" class="heatmap_container">
                     <div id="teamName2" style="background-color: #e41a1c;">
                         <p id="team2">Team 2</p>
                     </div>
                     <div id="f2" class="field" ></div>
-                    <div id="heatmap2" class="heatmap"></div>
                 </div>
                 <div id="heatUpdater">
                     <p>Change heat value !</p>
-                    <!-- <input type="range" name="heatSlider" id="heatSlider" min="1" max="100" value="30"> -->
                 </div>
                 
             </div>
@@ -86,7 +78,8 @@
         <script src="assets/js/charts/heatmap.js"></script>
         <script src="assets/js/charts/v_presence.js"></script>
         <script src="assets/js/charts/h_presence.js"></script>
-        <script src="assets/js/charts/barCharts.js"></script>
+        <!-- <script src="assets/js/charts/barCharts.js"></script> -->
+        <script src="assets/js/chartsController.js"></script>
     </body>
     <script src="/reload/reload.js"></script>
 </html>

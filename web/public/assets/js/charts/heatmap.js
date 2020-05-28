@@ -46,12 +46,6 @@ function createHeatmap(config, positions, width, height, max, val) {
     ////////// OPERATIONS ON HEATMAPS //////////
 ===================================================*/
 
-// DATA QUEUE
-d3.queue()
-    .defer(d3.json, "http://localhost:3000/api/frame?video_id=5ecdcc69521f95f867ba1eaa")
-    .awaitAll(initHeatMaps);
-
-
 /**
  * Update each heat value in given heatmap data
  * @param {Array} data
@@ -93,8 +87,7 @@ function listenHeatChange(heatmaps) {
 /**
  * 
  */
-function initHeatMaps(err, resData) {
-  if (err) throw err;
+function initHeatMaps(data) {
 
   // params
   var w = 525,
@@ -102,7 +95,18 @@ function initHeatMaps(err, resData) {
     max = 100,
     val = 20,
     p = {};
-    data = resData[0];
+
+  // create divs to contain each heatmaps
+  // first div
+  d3.select("#hc1")
+    .append("div")
+      .attr("id", "heatmap1")
+      .attr("class", "heatmap")
+  // second div
+  d3.select("#hc2")
+    .append("div")
+      .attr("id", "heatmap2")
+      .attr("class", "heatmap")
 
   // configs
   var config1 = {
@@ -120,18 +124,17 @@ function initHeatMaps(err, resData) {
   let h2 = createHeatmap(config2, {pos: p['p2'], xMax: p['xMax'], yMax: p['yMax']}, w, h, max, val);
 
   // creating heat slider
+  d3.select("#heatSlider").remove();
   d3.select("#heatUpdater")
     .append("input")
       .attr("type", "range")
+      .attr("name", "heatSlider")
       .attr("min", 0)
       .attr("max", max)
       .attr("step", "1")
       .attr("value", val)
       .attr("id", "heatSlider")
-      .on("input", function input() {
+      .on("input", function (d) {
         listenHeatChange([h1, h2]);
       });
-
-  // listening to heat slider change
-  listenHeatChange();
 }
