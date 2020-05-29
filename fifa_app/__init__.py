@@ -2,7 +2,6 @@ from flask import Flask
 
 from .extensions import mongo
 from fifa_app.api import register_api
-from fifa_app.views import register_views
 from .utils import MongoJSONEncoder, ObjectIdConverter
 
 
