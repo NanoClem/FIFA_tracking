@@ -1,7 +1,7 @@
 # FIFA_tracking
 
 This project is meant to save positions of FIFA 19 player's during a match and show them on several vizualisation.  
-You can find [here](https://drive.google.com/drive/folders/1wGbBVf5hffwysKyJc9UaqGVEti60Lzil?usp=sharing) a presentation video of the project.
+You can find [here](https://drive.google.com/drive/folders/1wGbBVf5hffwysKyJc9UaqGVEti60Lzil?usp=sharing) a presentation video in french of the project.
 
 ## Project goal
 
