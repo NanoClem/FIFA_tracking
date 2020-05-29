@@ -1,0 +1,96 @@
+body {
+    background-color: #a4fba6;
+}
+
+#brand {
+    font-size: 25px;
+}
+
+#navbarDropdown {
+    font-size: 20px;
+}
+
+#vidSelector {
+    float: left;
+    margin-top: 30px;
+    margin-left: 50px;
+}
+
+.boardSide {
+    /* border: 3px solid blue; */
+    padding: 10px;
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* HEATMAPS */
+.heatmap_container {
+    /* border: 2px solid blue; */
+    position: relative;
+    width: 565px; 
+    height: 380px;
+    margin: 20px;
+}
+
+.teamLabel {
+    padding: 5px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.field {
+    position: absolute;
+}
+
+.heatmap {
+    width: 525px;
+    height: 340px;
+    margin: 0 auto;
+    position: absolute;
+}
+
+.heatmap canvas {
+    padding: 20px 0;
+    opacity: 70%;
+}
+
+#heatUpdater {
+    background-color: aliceblue;
+    padding: 15px;
+    text-align: center;
+}
+
+
+/* BAR CHARTS */
+.chart_container {
+    /* border: 2px solid blue; */
+    position: relative;
+    width: 780px; 
+    height: 520px;
+    margin: 20px;
+}
+
+.barChart {
+    position: absolute;
+    margin: 0 auto;
+}
+
+#vbarChart text.Axis {
+    padding: 20px;
+}
+
+#hbarChart rect {
+    opacity: 80%;
+}
+
+text.Axis {
+    fill:white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18px;  
+    font-weight: 400;
+    text-anchor: middle;
+}

@@ -1,5 +1,6 @@
 from flask import jsonify
 from datetime import datetime
+import json
 from bson.json_util import dumps
 from bson.errors import InvalidId
 
@@ -56,6 +57,17 @@ class TeamDAO(object):
             return jsonify(data)
         except InvalidId:
             self.ns.abort(422, message="Invalid id {}".format(id), data={})
+
+
+    def getTwoByID(self, id1, id2):
+        """ Get two teams by their ids
+        """
+        res = []
+        for id in [id1, id2]:
+            d = self.getByID(id).get_data(as_text=True)     # result here is a Response object
+            res.append(json.loads(d))
+
+        return jsonify(res)
         
 
     #---------------------------------------------
@@ -88,12 +100,10 @@ class TeamDAO(object):
         return jsonify( {'inserted_ids': res.inserted_ids} )
 
 
-    def update_frame(self, name, data):
+    def update_team(self, name, data):
         """ Update a team
         """
-        frame = self.db.find({'name': name})
-        update = {'$set': data}
-        self.db.update_one(frame, update)
+        self.db.update_one({'name': name}, {'$set': data})
         return ''
 
 
@@ -111,5 +121,8 @@ class TeamDAO(object):
     def delete_by_id(self, id):
         """ Delete a data collection
         """
-        self.db.delete_one({'_id': id})
-        return ''
+        try:
+            self.db.delete_one({'_id': id})
+            return ''
+        except InvalidId:
+            self.ns.abort(422, message="Invalid id {}".format(id), data={})

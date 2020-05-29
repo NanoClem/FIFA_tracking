@@ -91,9 +91,7 @@ class FrameDAO(object):
     def update_frame(self, num, data):
         """ Update a frame
         """
-        frame = self.db.find({'num': num})
-        update = {'$set': data}
-        self.db.update_one(frame, update)
+        self.db.update_one({'_id': id}, {'$set': data})
         return ''
 
 
@@ -111,5 +109,22 @@ class FrameDAO(object):
     def delete_by_id(self, id):
         """ Delete a data collection
         """
-        self.db.delete_one({'_id': id})
-        return ''
+        try:
+            self.db.delete_one({'_id': id})
+            return ''
+        except InvalidId:
+            self.ns.abort(422, message="Invalid id {}".format(id), data={})
+
+
+    #---------------------------------------------
+    #   GET FRAMES BY VIDEO ID
+    #---------------------------------------------
+
+    def getByVideoID(self, id):
+        """ Get frames by their video id
+        """
+        try:
+            cursor = list(self.db.find({'video_id': id}))
+            return jsonify(cursor)
+        except InvalidId:
+            self.ns.abort(422, message="Invalid id {}".format(id), data={})

@@ -20,10 +20,8 @@ class TeamList(Resource):
     """ Get a list of all stored teams and allows to POST many teams
     """
 
-    @ns.doc('get_all_teams') #, security='apikey')
+    @ns.doc('get_all_teams')
     @ns.response(200, 'Success')
-    #@ns.marshal_list_with(model)
-    #@token_required
     def get(self):
         """ Return a list of all stored teams
         """
@@ -40,7 +38,7 @@ class TeamList(Resource):
 
 
 #---------------------------------------------
-#   POST ONE DOCUMENT
+#   ONE OR MANY
 #---------------------------------------------
 
 @ns.route('/', strict_slashes = False)
@@ -61,6 +59,7 @@ class Team(Resource):
     @ns.doc('get_one_team')
     @ns.response(200, 'Success')
     @ns.expect(model)
+    @ns.expect([model])
     def get(self):
         """ Get one or many teams matching with given body
         """
@@ -87,13 +86,13 @@ class TeamByName(Resource):
     """ Get, update or delete one team by its num
     """
 
-    @ns.doc('update_frame')
-    @ns.response(204, 'Frame successfuly updated')
+    @ns.doc('update_team')
+    @ns.response(204, 'Team successfuly updated')
     @ns.expect(model)
-    def put(self, num):
-        """ Update a frame by its id
+    def put(self, name):
+        """ Update a team by its name
         """
-        return make_response(DAO.update_frame(num, ns.payload), 204)
+        return make_response(DAO.update_team(name, ns.payload), 204)
 
 
 #---------------------------------------------
@@ -103,13 +102,12 @@ class TeamByName(Resource):
 @ns.route("/<objectid:id>")
 @ns.response(404, 'Team not found')
 @ns.param('id', 'The team unique identifier')
-class FrameByID(Resource):
+class TeamByID(Resource):
     """ Get, update or delete one team
     """
 
     @ns.doc('get_team_by_id')
     @ns.response(200, 'Success')
-    @ns.marshal_with(model)
     def get(self, id):
         """ Returns a team by its id
         """
@@ -131,3 +129,23 @@ class FrameByID(Resource):
         """ Delete a team by its id
         """
         return make_response(DAO.delete_by_id(id), 204)
+
+
+#---------------------------------------------
+#   GET TWO TEAMS BY ID
+#---------------------------------------------
+
+@ns.route("/<objectid:id1>/<objectid:id2>")
+@ns.response(404, 'Team not found')
+@ns.param('id1', 'First team unique identifier')
+@ns.param('id2', 'second team unique identifier')
+class TeamsByID(Resource):
+    """ Get two teams by their ids
+    """
+
+    @ns.doc('get_team_by_id')
+    @ns.response(200, 'Success')
+    def get(self, id1, id2):
+        """ Returns two teams by their ids
+        """
+        return make_response(DAO.getTwoByID(id1, id2), 200)

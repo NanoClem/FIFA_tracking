@@ -1,13 +1,14 @@
-# virtualenv python
+# python
 venv/
 
 # IDE
 .vscode/
 .idea/
-/fifa_app/frames/
 .env
 __pycache__/
-data/
 
-frames/
+data/
+node_modules/
+
+
 
