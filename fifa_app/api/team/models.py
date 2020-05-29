@@ -18,9 +18,10 @@ def create_team_model(ns):
     """ Create a model for a team
     """
     return ns.model('Teams', {
-        '_id'               : fields.String(description='The unique identifier of the team'),
-        'name'              : fields.String(description='The name of the soccer team'),
-        'players'           : fields.List(fields.Nested(create_player_model(ns)), description='List of players in the team'),
-        'tactic'            : fields.String(description='How the team is positioned of the field'),
-        'created_at'        : fields.String(description='Date of creation')
+        '_id'          : fields.String(description='The unique identifier of the team'),
+        'name'         : fields.String(description='The name of the soccer team'),
+        'jersey_color' : fields.String(description='Hex value of the jersey color'),
+        'players'      : fields.List(fields.Nested(create_player_model(ns)), description='List of players in the team'),
+        'tactic'       : fields.String(description='How the team is positioned of the field'),
+        'created_at'   : fields.String(description='Date of creation')
     })
