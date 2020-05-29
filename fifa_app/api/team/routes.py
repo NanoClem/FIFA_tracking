@@ -20,10 +20,8 @@ class TeamList(Resource):
     """ Get a list of all stored teams and allows to POST many teams
     """
 
-    @ns.doc('get_all_teams') #, security='apikey')
+    @ns.doc('get_all_teams')
     @ns.response(200, 'Success')
-    #@ns.marshal_list_with(model)
-    #@token_required
     def get(self):
         """ Return a list of all stored teams
         """
@@ -87,13 +85,13 @@ class TeamByName(Resource):
     """ Get, update or delete one team by its num
     """
 
-    @ns.doc('update_frame')
-    @ns.response(204, 'Frame successfuly updated')
+    @ns.doc('update_team')
+    @ns.response(204, 'Team successfuly updated')
     @ns.expect(model)
-    def put(self, num):
-        """ Update a frame by its id
+    def put(self, name):
+        """ Update a team by its name
         """
-        return make_response(DAO.update_frame(num, ns.payload), 204)
+        return make_response(DAO.update_team(name, ns.payload), 204)
 
 
 #---------------------------------------------
