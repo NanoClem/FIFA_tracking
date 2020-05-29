@@ -88,12 +88,10 @@ class TeamDAO(object):
         return jsonify( {'inserted_ids': res.inserted_ids} )
 
 
-    def update_frame(self, name, data):
+    def update_team(self, name, data):
         """ Update a team
         """
-        frame = self.db.find({'name': name})
-        update = {'$set': data}
-        self.db.update_one(frame, update)
+        self.db.update_one({'name': name}, {'$set': data})
         return ''
 
 
@@ -111,5 +109,8 @@ class TeamDAO(object):
     def delete_by_id(self, id):
         """ Delete a data collection
         """
-        self.db.delete_one({'_id': id})
-        return ''
+        try:
+            self.db.delete_one({'_id': id})
+            return ''
+        except InvalidId:
+            self.ns.abort(422, message="Invalid id {}".format(id), data={})

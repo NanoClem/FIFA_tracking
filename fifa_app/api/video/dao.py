@@ -91,10 +91,11 @@ class VideoDAO(object):
     def update_video(self, id, data):
         """ Update a video
         """
-        video = self.db.find({'_id': id})
-        update = {'$set': data}
-        self.db.update_one(video, update)
-        return ''
+        try:
+            self.db.update_one({'_id': id}, {'$set': data})
+            return ''
+        except InvalidId:
+            self.ns.abort(422, message="Invalid id {}".format(id), data={})
 
 
     #---------------------------------------------
@@ -111,5 +112,8 @@ class VideoDAO(object):
     def delete_by_id(self, id):
         """ Delete a data collection
         """
-        self.db.delete_one({'_id': id})
-        return ''
+        try:
+            self.db.delete_one({'_id': id})
+            return ''
+        except InvalidId:
+            self.ns.abort(422, message="Invalid id {}".format(id), data={})

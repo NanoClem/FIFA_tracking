@@ -91,9 +91,7 @@ class FrameDAO(object):
     def update_frame(self, num, data):
         """ Update a frame
         """
-        frame = self.db.find({'num': num})
-        update = {'$set': data}
-        self.db.update_one(frame, update)
+        self.db.update_one({'_id': id}, {'$set': data})
         return ''
 
 
