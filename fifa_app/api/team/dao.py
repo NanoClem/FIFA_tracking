@@ -1,5 +1,6 @@
 from flask import jsonify
 from datetime import datetime
+import json
 from bson.json_util import dumps
 from bson.errors import InvalidId
 
@@ -56,6 +57,17 @@ class TeamDAO(object):
             return jsonify(data)
         except InvalidId:
             self.ns.abort(422, message="Invalid id {}".format(id), data={})
+
+
+    def getTwoByID(self, id1, id2):
+        """ Get two teams by their ids
+        """
+        res = []
+        for id in [id1, id2]:
+            d = self.getByID(id).get_data(as_text=True)
+            res.append(json.loads(d))
+
+        return jsonify(res)
         
 
     #---------------------------------------------
