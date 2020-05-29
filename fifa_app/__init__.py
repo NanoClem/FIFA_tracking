@@ -33,6 +33,5 @@ def create_app(config_object='fifa_app.settings'):
 
     # REGISTER APP ELEMENTS
     register_api(app)
-    register_views(app)
     
     return app
