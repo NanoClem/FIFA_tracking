@@ -1,7 +1,5 @@
 from flask_restplus import Api
 
-# from fifa_app.modules.auth import authorizations
-
 
 # API constructor
 api = Api(
