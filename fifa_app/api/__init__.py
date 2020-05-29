@@ -7,9 +7,7 @@ from flask_restplus import Api
 api = Api(
     title = "RESTful-fifa",
     description = "interact with data from FIFA",
-    version = 1.0,
-    #doc = 'api/doc'
-    #authorizations = authorizations
+    version = 1.0
 )
 
 
