@@ -35,7 +35,7 @@ body {
     margin: 20px;
 }
 
-.heatmap_container p {
+.teamLabel {
     padding: 5px;
     font-size: 20px;
     color: white;
