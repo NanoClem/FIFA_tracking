@@ -64,7 +64,7 @@ class TeamDAO(object):
         """
         res = []
         for id in [id1, id2]:
-            d = self.getByID(id).get_data(as_text=True)
+            d = self.getByID(id).get_data(as_text=True)     # result here is a Response object
             res.append(json.loads(d))
 
         return jsonify(res)
