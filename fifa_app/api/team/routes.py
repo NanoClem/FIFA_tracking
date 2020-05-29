@@ -107,7 +107,6 @@ class FrameByID(Resource):
 
     @ns.doc('get_team_by_id')
     @ns.response(200, 'Success')
-    @ns.marshal_with(model)
     def get(self, id):
         """ Returns a team by its id
         """
