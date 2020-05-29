@@ -9,55 +9,37 @@ This project has two goals.
 - The second use is the vizualisation part : After fetching data from database, it will display them on different vizulisation, as bar chart, heatmap etc...
 
 ## Installation
+Install required python modules using `pip install -r requirements.txt`.  
 
-In order to install the project on your local machine, you'll have to follow this steps :
+## Run Flask api
+### Setup .env
+The project needs a .env file for configuration, it should contain : 
+````bash
+DB_URI = your neo4j graph database uri
+````  
 
-- Download the project from this git
-- Install some mandatory python modules to analyze the location of each players.
+### Setup flask env
+Now to setup the flask env, you'll find a default .flaskenv file to the project root folder with :  
+````bash
+FLASK_APP = flask_app (don't change it unless you know what you're doing)
+FLASK_RUN_PORT = port on which flask is running
+FLASK_RUN_HOST = host on which flask is running
+FLASK_ENV = development (here debug mode is enabled, change it according to your development stade)
+````
+All you have to do now is to start flask with `flask run` from project root folder. Go to the base url to see the api documentation.
 
-At the root of the project, in a terminal, type :
-
-```Bash
-pip install -r requirements.txt
-```
-
-///PARTIE CLEMENT SUR fLASK
-
-### Node installation
-
-You need node.js on your computer to run this part, you can download it [here](https://nodejs.org/en/download/).
-Once installed, do the following command in a terminal, in /web/ file
-
-```Bash
-npm install
-```
-Your project is now ready to be run.
-
-## Usage
-
-Now to run the project, you will have to start Flask with 
-```Bash
-flask run
-```
+## Run positions tracking
 If you want to run the frames capture and positions tracking, run /core/tracking.py
-From here, you can
-- send a video to the API from its path
-- send teams to the API from their name
-- send the useful frames of a video to the API
 
-///PARTIE CLEMENT SUR USAGE DASHBOARD
-
+### Client installation and run
+The project needs node.js installed on your computer, download it [here](https://nodejs.org/en/download/).
+Once installed, open a terminal to the web folder and run following instructions :
+1. `npm install`
+2. `npm start`
 
 ## Authors
-
-This project was designed and conceived by four students :
-
+This project was designed and programmed by four students :
 [![](https://avatars3.githubusercontent.com/u/43412314?s=60&v=4)](https://github.com/thomascormier) 
 [![](https://avatars3.githubusercontent.com/u/22052945?s=60&v=4)](https://github.com/evandadure)
 [![](https://avatars2.githubusercontent.com/u/33009785?s=60&v=4)](https://github.com/NanoClem)
-[![](https://avatars3.githubusercontent.com/u/18655688?s=60&v=4)](https://github.com/MaxencePRSZ) 
-
-
-## Project Status
-
-This project is currently in development
+[![](https://avatars3.githubusercontent.com/u/18655688?s=60&v=4)](https://github.com/MaxencePRSZ)
